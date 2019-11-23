@@ -21,12 +21,12 @@
 // The directive will call the function on the 'bind' and 'update' hooks
 export default function(_el, _binding, _vnode)
 {
-	const name  = `v-${_binding.name}`;
+	const name  = `"v-${_binding.name}"`;
 	const value = _binding.value;
 
 	if (value === undefined || value === null)
 	{
-		logError(`the value of ${name} is null or undefined`);
+		logError(`The value of ${name} is null or undefined`);
 		return -1;
 	}
 
@@ -42,7 +42,7 @@ export default function(_el, _binding, _vnode)
 		// Check that all of its values are strings
 		if (!value.every(__key => typeof __key === 'string'))
 		{
-			logError(`when the value of ${name} is an array, all of its values must be strings`);
+			logError(`When the value of ${name} is an array, all of its values must be strings`);
 			return -1;
 		}
 
@@ -58,7 +58,7 @@ export default function(_el, _binding, _vnode)
 		// Check that all of its values are booleans
 		if (!Object.keys(value).every(__key => typeof value[__key] === 'boolean'))
 		{
-			logError(`when the value of ${name} is an object, all of its values must be booleans`);
+			logError(`When the value of ${name} is an object, all of its values must be booleans`);
 			return -1;
 		}
 
@@ -74,7 +74,7 @@ export default function(_el, _binding, _vnode)
 	}
 	else
 	{
-		logError(`the value of ${name} must either be a string, an array of strings or an object whose values are all booleans`);
+		logError(`The value of ${name} must either be a string, an array of strings or an object whose values are all booleans`);
 		return -1;
 	}
 
@@ -92,12 +92,12 @@ function setClassByName(_class, _el, _binding, _vnode)
 	// Check that the corresponding property is defined and is a boolean
 	if (value === undefined || value === null)
 	{
-		logError(`${prop} is undefined or null`);
+		logError(`Property "${prop}" is undefined or null`);
 		return -1;
 	}
 	if (typeof value !== 'boolean')
 	{
-		logError(`${prop} must be a boolean`);
+		logError(`Property "${prop}" must be a boolean`);
 		return -1;
 	}
 
@@ -138,31 +138,20 @@ function setElemClass(_class, _add, _el, _binding)
 			{
 				// Get all the class names that aren't modifiers themselves
 				const classes = [..._el.classList].filter(__class => !__class.includes('--'));
-				if (classes.length == 0)
-				{
-					logError(`the modifier .bem is set, but there is no base class to modify`);
-					return;
-				}
 
+				// If there is no base class, don't add the modifier
+				if (classes.length == 0) return;
+
+				// Else, take the first class of the list
 				baseClass = classes[0];
 			}
 
-			className = `${baseClass}--${className}`
+			// Duplicate the name of the base class and add the modifier as its suffix
+			className = `${baseClass}--${className.replace(/^is-/, '')}`
 			break;
 	}
 
-	if (_add)
-	{
-		// @DEBUG
-		console.log(`Adding class ${className}`);
-		_el.classList.add(className);
-	}
-	else
-	{
-		// @DEBUG
-		console.log(`Removing class ${className}`);
-		_el.classList.remove(className);
-	}
+	if (_add) _el.classList.add(className); else _el.classList.remove(className);
 }
 
 /**
@@ -174,4 +163,4 @@ function camel2Kebab(_str) { return _str.replace(/(?:[A-Z]|\d+)/g, __match => `-
 /**
  * Output an error in the dev console
  */
-function logError(_msg) { console.error(`Error: ${_msg}`); }
+function logError(_msg) { console.error(`[vue-css-modifiers]: ${_msg}`); }
