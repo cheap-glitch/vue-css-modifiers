@@ -117,7 +117,7 @@ present on the element, the modifier will not be added.
 ```vue
 <!-- Implicit base class -->
 <div class="navbar" v-mod.bem="{ hidden }"></div>
-<!-- Output: <div class="navbar navbar--hidden"></div> -->
+<!-- Output: <div class="navbar navbarhidden"></div> -->
 
 <!-- Explicit base class -->
 <div class="left sidebar" v-mod:sidebar.bem="{ hidden }"></div>
@@ -145,7 +145,7 @@ Vue.directive('bem', VueCSSModifiers);
 <!-- Output: <div class="navbar is-hidden"></div> -->
 
 <div class="navbar" v-bem="{ hidden }"></div>
-<!-- Output: <div class="navbar navbar\-\-hidden"></div> -->
+// Output: <div class="navbar navbar--hidden"></div>
 ```
 
 ## License
