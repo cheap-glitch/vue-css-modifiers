@@ -9,6 +9,7 @@
   "bugs": {
     "url": "https://github.com/cheap-glitch/vue-css-modifiers/issues"
   },
+
   "author": "cheap-glitch <cheap.glitch@gmail.com> (https://github.com/cheap-glitch)",
   "homepage": "https://github.com/cheap-glitch/vue-css-modifiers#readme",
   "description": "A tiny Vue directive to simplify the manipulation of CSS modifier classes.",
