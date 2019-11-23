@@ -145,7 +145,7 @@ Vue.directive('bem', VueCSSModifiers);
 <!-- Output: <div class="navbar is-hidden"></div> -->
 
 <div class="navbar" v-bem="{ hidden }"></div>
-// Output: <div class="navbar navbar--hidden"></div>
+// Output: <div class="navbar navbar––hidden"></div>
 ```
 
 ## License
