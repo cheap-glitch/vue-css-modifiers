@@ -1,7 +1,7 @@
 
 /**
  * vue-css-modifiers/index.js
- * A tiny Vue directive to manipulate CSS class modifiers more easily
+ * A tiny Vue directive to simplify the manipulation of CSS modifier classes
  *
  * Copyright 2019 cheap-glitch
  *
