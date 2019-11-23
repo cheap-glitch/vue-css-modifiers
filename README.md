@@ -80,7 +80,7 @@ Examples:
 	<!-- Output: <div clas="is-hidden"></div> -->
 
 	<!-- Same thing but with several classes -->
-	<div v-mod="['is-hidden', 'is-flipped', 'is-height-fixed']></div>
+	<div v-mod="['is-hidden', 'is-flipped', 'is-height-fixed']"></div>
 	<!-- Output: <div class="is-hidden is-height-fixed"></div> -->
 
 	<!-- With an object expression, the names of the properties will be converted to kebab case -->
@@ -117,11 +117,11 @@ present on the element, the modifier will not be added.
 ```vue
 <!-- Implicit base class -->
 <div class="navbar" v-mod.bem="{ hidden }"></div>
-<!-- Output: <div class="navbar navbarhidden"></div> -->
+<!-- Output: <div class="navbar navbar––hidden"></div> -->
 
 <!-- Explicit base class -->
 <div class="left sidebar" v-mod:sidebar.bem="{ hidden }"></div>
-<!-- Output: <div class="left sidebar sidebar--hidden"></div> -->
+<!-- Output: <div class="left sidebar sidebar––hidden"></div> -->
 ```
 
 ### Using 'is-' or BEM syntax by default
