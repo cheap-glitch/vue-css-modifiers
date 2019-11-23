@@ -1,0 +1,4 @@
+/.nyc-output/
+/.eslintrc.json
+
+/test-app/
