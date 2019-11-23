@@ -92,9 +92,9 @@ Examples:
 	export default {
 		data() {
 			return {
-				isHidden:	true,
-				isFlipped:	false,
-				isHeightFixed:	true,
+				isHidden:      true,
+				isFlipped:     false,
+				isHeightFixed: true,
 			}
 		},
 	}

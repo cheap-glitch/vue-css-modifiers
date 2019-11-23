@@ -115,9 +115,14 @@ function setElemClass(_class, _add, _el, _binding)
 	let className = _class;
 	let baseClass = '';
 
+	// Get the mode from the directive modifiers
 	let mode = 'default';
 	if ('is'  in _binding.modifiers) mode = 'force-is-prefix';
 	if ('bem' in _binding.modifiers) mode = 'bem';
+
+	// Enforce a mode if the name of the directive is that of the corresponding directive modifier
+	if (_binding.name == 'is')  mode = 'force-is-prefix';
+	if (_binding.name == 'bem') mode = 'bem';
 
 	switch (mode)
 	{
@@ -133,6 +138,9 @@ function setElemClass(_class, _add, _el, _binding)
 			if ('arg' in _binding)
 			{
 				baseClass = _binding.arg;
+
+				// If the base class is not set on the element, don't add the modifier
+				if (!_el.classList.contains(baseClass)) return;
 			}
 			else
 			{
