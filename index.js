@@ -19,7 +19,7 @@
  */
 
 // The directive will call the function on the 'bind' and 'update' hooks
-export default function(_el, _binding, _vnode)
+module.exports = function(_el, _binding, _vnode)
 {
 	const name  = `"v-${_binding.name}"`;
 	const value = _binding.value;

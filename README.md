@@ -26,7 +26,7 @@ The following code:
 becomes:
 ```vue
 <template>
-	<div v-mod="{ isHidden, isFlipped, isHeightFixed }"></div>
+	<div v-mods="{ isHidden, isFlipped, isHeightFixed }"></div>
 </template>
 
 <script>
@@ -76,20 +76,22 @@ Examples:
 <template>
 	<!-- With the string expression, the class name will be added/removed
 	     if the property with the corresponding camel case name is true/false -->
-	<div v-mod="'is-hidden'"></div>
+	<div v-mods="'is-hidden'"></div>
 	<!-- Output: <div clas="is-hidden"></div> -->
 
 	<!-- Same thing but with several classes -->
-	<div v-mod="['is-hidden', 'is-flipped', 'is-height-fixed']"></div>
+	<div v-mods="['is-hidden', 'is-flipped', 'is-height-fixed']"></div>
 	<!-- Output: <div class="is-hidden is-height-fixed"></div> -->
 
 	<!-- With an object expression, the names of the properties will be converted to kebab case -->
-	<div v-mod="{ isHidden, isFlipped, isHeightFixed }"></div>
-	<!-- Output: <div class="is-hidden is-height-fixed"></div> -->
+	<div v-mods="{ isHidden, isFlipped, isHeightFixed, isSpinning: name === 'spinner' }"></div>
+	<!-- Output: <div class="is-hidden is-height-fixed is-spinning"></div> -->
 </template>
 
 <script>
 	export default {
+		props: ['name'],
+
 		data() {
 			return {
 				isHidden:      true,
@@ -105,7 +107,7 @@ Examples:
 
 Use the `is` modifier to automatically prefix all modifier classes with `is-`:
 ```vue
-<div v-mod.is="{ hidden, isHeightFixed }"></div>
+<div v-mods.is="{ hidden, isHeightFixed }"></div>
 <!-- Output: <div class="is-hidden, is-height-fixed"></div> -->
 ```
 
@@ -116,11 +118,11 @@ founds that is not a BEM modifier). Either way, if the base class is not
 present on the element, the modifier will not be added.
 ```vue
 <!-- Implicit base class -->
-<div class="navbar" v-mod.bem="{ hidden }"></div>
+<div class="navbar" v-mods.bem="{ hidden }"></div>
 <!-- Output: <div class="navbar navbar––hidden"></div> -->
 
 <!-- Explicit base class -->
-<div class="left sidebar" v-mod:sidebar.bem="{ hidden }"></div>
+<div class="left sidebar" v-mods:sidebar.bem="{ hidden }"></div>
 <!-- Output: <div class="left sidebar sidebar––hidden"></div> -->
 ```
 
