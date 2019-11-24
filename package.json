@@ -17,7 +17,9 @@
     "vue",
     "vue-directive",
     "css",
-    "bem"
+    "bem",
+    "bem-css",
+    "bem-modifiers"
   ],
 
   "main": "index.js",

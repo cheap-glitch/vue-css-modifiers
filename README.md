@@ -44,7 +44,7 @@ becomes:
 
 The modifier classes merge seamlessly with other static and dynamic classes.
 You can also easily enforce the style of your choosing ('is-' or BEM) with
-a simple modifier.
+a simple directive modifier.
 
 ## Installation
 
@@ -61,7 +61,7 @@ Import and register the directive in the entry point of your app:
 import Vue             from 'vue';
 import VueCSSModifiers from 'vue-css-modifiers';
 
-Vue.directive('mod', VueCSSModifiers);
+Vue.directive('mods', VueCSSModifiers);
 // […]
 ```
 
