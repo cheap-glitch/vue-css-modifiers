@@ -1,6 +1,6 @@
 # vue-css-modifiers
 
-**vue-css-modifiers** provides a directive to simplify the manipulation of CSS
+**vue-css-modifiers** provides a  directive to simplify the  manipulation of CSS
 modifier classes.
 
 The following code:
@@ -42,9 +42,12 @@ becomes:
 </script>
 ```
 
-The modifier classes merge seamlessly with other static and dynamic classes.
-You can also easily enforce the style of your choosing ('is-' or BEM) with
-a simple directive modifier.
+The modifier classes merge seamlessly with other static and dynamic classes. You
+can also easily enforce the style of  your choosing ('is-' or BEM) with a simple
+directive modifier.
+
+Using a  different directive to declare  CSS modifiers also brings  the indirect
+benefit of a clear seperation between the main classes and their modifiers.
 
 ## Installation
 
@@ -111,11 +114,11 @@ Use the `is` modifier to automatically prefix all modifier classes with `is-`:
 <!-- Output: <div class="is-hidden, is-height-fixed"></div> -->
 ```
 
-Use the `bem` modifier to add the modifier class as a suffix to another class.
-This base class can either be defined explicitely through a directive argument,
-or left implicit (in that case, the directive will use the first class it
-founds that is not a BEM modifier). Either way, if the base class is not
-present on the element, the modifier will not be added.
+Use the `bem` modifier  to add the modifier class as a  suffix to another class.
+This base class can either be  defined explicitely through a directive argument,
+or left implicit (in that case, the directive will use the first class it founds
+that is not a BEM modifier). Either way, if the base class is not present on the
+element, the modifier will not be added.
 ```vue
 <!-- Implicit base class -->
 <div class="navbar" v-mods.bem="{ hidden }"></div>
@@ -124,11 +127,16 @@ present on the element, the modifier will not be added.
 <!-- Explicit base class -->
 <div class="left sidebar" v-mods:sidebar.bem="{ hidden }"></div>
 <!-- Output: <div class="left sidebar sidebar––hidden"></div> -->
+
+<!-- Explicit dynamic base class -->
+<div :class="`navbar-${navbarPos}`" v-mods:[`navbar-${navbarPos}`].bem="{ hidden }"></div>
+<!-- Output: <div class="navbar-left navbar-left––hidden"></div> -->
+
 ```
 
 ### Using 'is-' or BEM syntax by default
 
-If you register the directive with the name `is` or `bem`, it will discard
+If you  register the  directive with  the name  `is` or  `bem`, it  will discard
 modifiers and always enforce the respective syntax.
 
 ```javascript
@@ -149,6 +157,9 @@ Vue.directive('bem', VueCSSModifiers);
 <div class="navbar" v-bem="{ hidden }"></div>
 <!-- Output: <div class="navbar navbar––hidden"></div> -->
 ```
+
+## Changelog
+See the full changelog [here](https://github.com/cheap-glitch/vue-css-modifiers/releases).
 
 ## License
 This project is licensed under the ISC license.
