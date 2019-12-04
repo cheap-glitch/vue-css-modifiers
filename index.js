@@ -91,15 +91,10 @@ function setClassByName(_class, _el, _binding, _vnode)
 	const prop  = kebab2Camel(_class);
 	const value = _vnode.context._data[prop];
 
-	// Check that the corresponding property is defined and is a boolean
+	// Check that the corresponding property is defined
 	if (value === undefined || value === null)
 	{
 		logError(`Property "${prop}" is undefined or null`);
-		return -1;
-	}
-	if (typeof value !== 'boolean')
-	{
-		logError(`Property "${prop}" must be a boolean`);
 		return -1;
 	}
 
@@ -140,9 +135,6 @@ function setElemClass(_class, _add, _el, _binding)
 			if ('arg' in _binding)
 			{
 				baseClass = _binding.arg;
-
-				// If the base class is not set on the element, don't add the modifier
-				if (!_el.classList.contains(baseClass)) return;
 			}
 			else
 			{
