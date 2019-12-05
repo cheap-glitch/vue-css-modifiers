@@ -21,7 +21,7 @@
  */
 
 // The directive will call the function on the 'bind' and 'update' hooks
-module.exports = function(_el, _binding, _vnode)
+module.exports = function(_el, _binding, _vnode, _oldVnode)
 {
 	const name  = `"v-${_binding.name}"`;
 	const value = _binding.value;
@@ -35,8 +35,7 @@ module.exports = function(_el, _binding, _vnode)
 	// If the value of the expression is a single string
 	if (typeof value === 'string')
 	{
-		if (setClassByName(value, _el, _binding, _vnode) == -1)
-			return -1;
+		return setClassByName(value, _el, _binding, _vnode);
 	}
 	// If the value of the expression is an array
 	else if (Array.isArray(value))
@@ -49,10 +48,8 @@ module.exports = function(_el, _binding, _vnode)
 		}
 
 		for (let i=0; i<value.length; i++)
-		{
 			if (setClassByName(value[i], _el, _binding, _vnode) == -1)
 				return -1;
-		}
 	}
 	// If the value is an object
 	else if (value === Object(value))
@@ -64,8 +61,20 @@ module.exports = function(_el, _binding, _vnode)
 			return -1;
 		}
 
+		// Check if BEM mode is activated
+		const isBEM = ('bem' in _binding.modifiers === true || _binding.name == 'bem');
+		// Check if the classes on the VNode have changed
+		const sameClasses = checkIfSameClasses(_vnode, _oldVnode);
+
 		// Add a class to the element for every key whose value is true
-		Object.keys(value).forEach(__key => setElemClass(camel2Kebab(__key), value[__key], _el, _binding, _vnode));
+		Object.keys(value).forEach(function(__key)
+		{
+			// Ignore unchanged values
+			if (_binding.oldValue && value[__key] === _binding.oldValue[__key] && (!isBEM || sameClasses))
+				return;
+
+			setElemClass(camel2Kebab(__key), value[__key], _el, _binding, _vnode);
+		});
 	}
 	else
 	{
@@ -152,6 +161,37 @@ function setElemClass(_class, _add, _el, _binding, _vnode)
 	}
 
 	if (_add) _el.classList.add(className); else _el.classList.remove(className);
+}
+
+/**
+ * Return 'true' if the classes are the same between the two VNodes, 'false' otherwise
+ */
+function checkIfSameClasses(_vnode, _oldVnode)
+{
+	if (!_oldVnode || !_vnode.data.class || !_oldVnode.data.class)
+		return false;
+
+	const classes    = _vnode.data.class;
+	const oldClasses = _oldVnode.data.class;
+
+	if (typeof classes != typeof oldClasses)
+		return false;
+
+	if (typeof classes == 'string')
+		return classes === oldClasses;
+
+	if (Array.isArray(classes))
+		return (classes.length == oldClasses.length) && classes.every(_class => oldClasses.includes(_class));
+
+	if (classes === Object(classes))
+	{
+		const keys    = Object.keys(classes);
+		const oldKeys = Object.keys(oldClasses);
+
+		return (keys.length == oldKeys.length) && keys.every(_key => oldKeys.includes(_key) && classes[_key] === oldClasses[_key])
+	}
+
+	return false;
 }
 
 /**

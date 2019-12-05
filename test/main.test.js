@@ -83,33 +83,46 @@ describe('vue-css-modifiers', () => {
 		expect(wrapper.find('#is-mode--4').classes()).to.contain('is-hidden');
 	});
 
-	it("adds modifiers as suffixes of a base class when the '.bem' modifier is specified", () => {
-		// With an implicit base class
+	it("adds modifiers as suffixes of an implicit base class when the '.bem' modifier is specified", () => {
 		expect(wrapper.find('#bem-mode--implicit--1').classes()).to.contain('base-class--hidden');
 		expect(wrapper.find('#bem-mode--implicit--2').classes()).to.contain('base-class--hidden');
 		expect(wrapper.find('#bem-mode--implicit--3').classes()).to.contain('base-class--hidden');
 
-		// With an implicit but nonexistent base class
+		// With a nonexistent base class
 		expect(wrapper.find('#bem-mode--implicit--4').classes()).not.to.contain('--hidden');
 		expect(wrapper.find('#bem-mode--implicit--4').classes()).not.to.contain('base-class--hidden');
 
-		// With an implicit base class toggled during execution
+		// With a base class toggled during execution
 		expect(wrapper.find('#bem-mode--implicit--5').classes()).not.to.contain('toggled-class--hidden');
 		setData(wrapper, { toggledClass: true });
 		expect(wrapper.find('#bem-mode--implicit--5').classes()).to.contain('toggled-class--hidden');
 
-		// With an implicit & dynamic base class
+		// With a dynamic base class
 		expect(wrapper.find('#bem-mode--implicit--6').classes()).to.contain('navbar-right--hidden');
 		setData(wrapper, { navbarPos: 'top' });
 		expect(wrapper.find('#bem-mode--implicit--6').classes()).to.contain('navbar-top--hidden');
+	});
 
-		// With an explicit base class
+	it("adds modifiers as suffixes of an explicit base class when the '.bem' modifier is specified", () => {
 		expect(wrapper.find('#bem-mode--explicit--1').classes()).to.contain('base-class--hidden');
 		expect(wrapper.find('#bem-mode--explicit--2').classes()).to.contain('base-class--hidden');
 		expect(wrapper.find('#bem-mode--explicit--3').classes()).to.contain('base-class--hidden');
 
-		// With an explicit but nonexistent base class
+		// With a nonexistent base class
+		expect(wrapper.find('#bem-mode--explicit--4').classes()).not.to.contain('--hidden');
 		expect(wrapper.find('#bem-mode--explicit--4').classes()).not.to.contain('base-class--hidden');
+
+		// With a base class toggled during execution
+		setData(wrapper, { toggledClass: false });
+		expect(wrapper.find('#bem-mode--explicit--5').classes()).not.to.contain('toggled-class--hidden');
+		setData(wrapper, { toggledClass: true });
+		expect(wrapper.find('#bem-mode--explicit--5').classes()).to.contain('toggled-class--hidden');
+
+		// With a dynamic base class
+		setData(wrapper, { navbarPos: 'right' });
+		expect(wrapper.find('#bem-mode--explicit--6').classes()).to.contain('navbar-right--hidden');
+		setData(wrapper, { navbarPos: 'top' });
+		expect(wrapper.find('#bem-mode--explicit--6').classes()).to.contain('navbar-top--hidden');
 	});
 
 	it("enforces the correct mode when registered as 'v-is' or 'v-bem'", () => {

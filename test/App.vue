@@ -6,7 +6,7 @@
 <!--{{{ Pug -->
 <template lang='pug'>
 
-div.App
+div.App(:class="{ 'test': toggledClass }")
 	//----------------------------------------------------------------------
 	//- Test that errors are properly thrown
 	//----------------------------------------------------------------------
@@ -72,30 +72,38 @@ div.App
 	div#is-mode--4(v-mods.is="{ hidden, flipped }")
 
 	//----------------------------------------------------------------------
-	//- Test BEM mode
+	//- Test BEM mode with an implicit base class
 	//----------------------------------------------------------------------
 
-	//- With an implicit base class
 	div#bem-mode--implicit--1.base-class(v-mods.bem="{ hidden }")
 	div#bem-mode--implicit--2(:class="['base-class']" v-mods.bem="{ hidden }")
 	div#bem-mode--implicit--3(:class="{ 'base-class': true }" v-mods.bem="{ hidden }")
 
-	//- With an implicit but nonexistent base class
+	//- With a nonexistent base class
 	div#bem-mode--implicit--4(v-mods.bem="{ hidden }")
 
-	//- With an implicit base class toggled during execution
+	//- With a base class toggled during execution
 	div#bem-mode--implicit--5(:class="{ 'toggled-class': toggledClass }" v-mods.bem="{ hidden }")
 
-	//- With an implicit & dynamic base class
+	//- With a dynamic base class
 	div#bem-mode--implicit--6(:class="`navbar-${navbarPos}`" v-mods.bem="{ hidden }")
 
-	//- With an explicit base class
+	//----------------------------------------------------------------------
+	//- Test BEM mode with an explicit base class
+	//----------------------------------------------------------------------
+
 	div#bem-mode--explicit--1.base-class(v-mods:base-class.bem="{ hidden }")
 	div#bem-mode--explicit--2(:class="['base-class']" v-mods:base-class.bem="{ hidden }")
 	div#bem-mode--explicit--3(:class="{ 'base-class': true }" v-mods:base-class.bem="{ hidden }")
 
-	//- With an explicit but nonexistent base class
+	//- With a nonexistent base class
 	div#bem-mode--explicit--4(v-mods:no-class.bem="{ hidden }")
+
+	//- With a base class toggled during execution
+	div#bem-mode--explicit--5(:class="{ 'toggled-class': toggledClass }" v-mods:toggled-class.bem="{ hidden }")
+
+	//- With a dynamic base class
+	div#bem-mode--explicit--6(:class="`navbar-${navbarPos}`" v-mods.bem="{ hidden }")
 
 	//----------------------------------------------------------------------
 	//- Test that directive names enforce the correct mode
