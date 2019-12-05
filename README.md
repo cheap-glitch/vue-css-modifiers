@@ -141,7 +141,12 @@ element, the modifier will not be added.
 <div class="left sidebar" v-mods:sidebar.bem="{ hidden }"></div>
 <!-- Output: <div class="left sidebar sidebar––hidden"></div> -->
 
-<!-- Explicit dynamic base class -->
+<!-- Dynamic base class -->
+<div :class="`menu-${menuPos}`" v-mods:menu-top.bem="{ hidden }"></div>
+<!-- Output: <div class="menu-bottom"></div>               (menuPos == 'bottom') -->
+<!--         <div class="menu-top menu-top--hidden"></div> (menuPos == 'top')    -->
+
+<!-- Dynamic base class with dynamic argument -->
 <div :class="`navbar-${navbarPos}`" v-mods:[`navbar-${navbarPos}`].bem="{ hidden }"></div>
 <!-- Output: <div class="navbar-left navbar-left––hidden"></div> -->
 
