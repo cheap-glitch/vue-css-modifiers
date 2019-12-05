@@ -47,7 +47,7 @@ can also easily enforce the style of  your choosing ('is-' or BEM) with a simple
 directive modifier.
 
 Using a  different directive to declare  CSS modifiers also brings  the indirect
-benefit of a clear seperation between the main classes and their modifiers.
+benefit of a clear separation between the main classes and their modifiers.
 
 ## Installation
 
@@ -61,8 +61,8 @@ Import and register the directive in the entry point of your app:
 ```javascript
 // main.js
 
-import Vue             from 'vue';
-import VueCSSModifiers from 'vue-css-modifiers';
+import Vue             from 'vue'
+import VueCSSModifiers from 'vue-css-modifiers'
 
 Vue.directive('mods', VueCSSModifiers);
 // […]
@@ -89,11 +89,24 @@ Examples:
 	<!-- With an object expression, the names of the properties will be converted to kebab case -->
 	<div v-mods="{ isHidden, isFlipped, isHeightFixed, isSpinning: name === 'spinner' }"></div>
 	<!-- Output: <div class="is-hidden is-height-fixed is-spinning"></div> -->
+
+	<!-- Works with both props and data -->
+	<div v-mods="{ isOpened, isHeightFixed }"></div>
+	<!-- Output: <div class="is-opened is-height-fixed"></div> -->
 </template>
 
 <script>
 	export default {
-		props: ['name'],
+		props: {
+			name: {
+				type: String,
+				required: true,
+			},
+			isOpened: {
+				type: Boolean,
+				default: true,
+			},
+		}
 
 		data() {
 			return {
@@ -115,7 +128,7 @@ Use the `is` modifier to automatically prefix all modifier classes with `is-`:
 ```
 
 Use the `bem` modifier  to add the modifier class as a  suffix to another class.
-This base class can either be  defined explicitely through a directive argument,
+This base class can either be  defined explicitly  through a directive argument,
 or left implicit (in that case, the directive will use the first class it founds
 that is not a BEM modifier). Either way, if the base class is not present on the
 element, the modifier will not be added.
@@ -142,8 +155,8 @@ modifiers and always enforce the respective syntax.
 ```javascript
 // main.js
 
-import Vue             from 'vue';
-import VueCSSModifiers from 'vue-css-modifiers';
+import Vue             from 'vue'
+import VueCSSModifiers from 'vue-css-modifiers'
 
 Vue.directive('is',  VueCSSModifiers);
 Vue.directive('bem', VueCSSModifiers);

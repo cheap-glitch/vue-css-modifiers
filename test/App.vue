@@ -35,9 +35,11 @@ div.App
 
 	//- Single string
 	div#simple-mods--1(v-mods="'is-hidden'")
+
 	//- Array of strings
 	div#simple-mods--2(v-mods="['is-hidden']")
 	div#simple-mods--3(v-mods="['is-hidden', 'is-flipped']")
+
 	//- Object
 	div#simple-mods--4(v-mods="{ isHidden }")
 	div#simple-mods--5(v-mods="{ isHidden, isFlipped }")
@@ -48,9 +50,11 @@ div.App
 
 	//- Single string
 	div#no-clash--1.static-class(v-mods="'is-hidden'")
+
 	//- Array of strings
 	div#no-clash--2.static-class(v-mods="['is-hidden']")
 	div#no-clash--3.static-class(v-mods="['is-hidden', 'is-flipped']")
+
 	//- Object
 	div#no-clash--4.static-class(v-mods="{ isHidden }")
 	div#no-clash--5.static-class(v-mods="{ isHidden, isFlipped }")
@@ -71,25 +75,27 @@ div.App
 	//- Test BEM mode
 	//----------------------------------------------------------------------
 
-	//- With an explicit base class
-	div#bem-mode--1(v-mods:base-class.bem="{ hidden, flipped }")
-
-	//- With an nonexistant implicit base class
-	div#bem-mode--2(v-mods.bem="{ hidden, flipped }")
-
 	//- With an implicit base class
-	div#bem-mode--3(v-mods.bem="{ hidden, flipped }" :class="['base-class']")
-	div#bem-mode--4.base-class(v-mods.bem="{ hidden, flipped }")
-	div#bem-mode--5.base-class(v-mods.bem="{ hidden, flipped }" :class="{ 'dynamic-base-class': true }")
+	div#bem-mode--implicit--1.base-class(v-mods.bem="{ hidden }")
+	div#bem-mode--implicit--2(:class="['base-class']" v-mods.bem="{ hidden }")
+	div#bem-mode--implicit--3(:class="{ 'base-class': true }" v-mods.bem="{ hidden }")
 
-	//- With a base class modified during execution
-	div#bem-mode--6(:class="`navbar-${navbarPos}`" v-mods:navbar-left.bem="{ hidden }")
+	//- With an implicit but nonexistent base class
+	div#bem-mode--implicit--4(v-mods.bem="{ hidden }")
 
-	//- With an implicit base class modified during execution
-	div#bem-mode--7(:class="`navbar-${navbarPos}`" v-mods.bem="{ hidden }")
+	//- With an implicit base class toggled during execution
+	div#bem-mode--implicit--5(:class="{ 'toggled-class': toggledClass }" v-mods.bem="{ hidden }")
 
-	//- With a computed class name
-	div#bem-mode--8(:class="`navbar-${navbarPos}`" v-mods:[`navbar-${navbarPos}`].bem="{ hidden }")
+	//- With an implicit & dynamic base class
+	div#bem-mode--implicit--6(:class="`navbar-${navbarPos}`" v-mods.bem="{ hidden }")
+
+	//- With an explicit base class
+	div#bem-mode--explicit--1.base-class(v-mods:base-class.bem="{ hidden }")
+	div#bem-mode--explicit--2(:class="['base-class']" v-mods:base-class.bem="{ hidden }")
+	div#bem-mode--explicit--3(:class="{ 'base-class': true }" v-mods:base-class.bem="{ hidden }")
+
+	//- With an explicit but nonexistent base class
+	div#bem-mode--explicit--4(v-mods:no-class.bem="{ hidden }")
 
 	//----------------------------------------------------------------------
 	//- Test that directive names enforce the correct mode
@@ -129,13 +135,14 @@ export default {
 
 	data() {
 		return {
-			hidden:     true,
-			flipped:    false,
+			hidden:        true,
+			flipped:       false,
 
-			isHidden:   true,
-			isFlipped:  false,
+			isHidden:      true,
+			isFlipped:     false,
 
-			navbarPos:  'right',
+			navbarPos:     'right',
+			toggledClass:  false,
 		}
 	},
 }

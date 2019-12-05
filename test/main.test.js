@@ -30,9 +30,14 @@ describe('vue-css-modifiers', () => {
 	const wrapper = factory();
 
 	it("adds modifiers properly", () => {
+		// Single string
 		expect(wrapper.find('#simple-mods--1').classes()).to.contain('is-hidden');
+
+		// Array of strings
 		expect(wrapper.find('#simple-mods--2').classes()).to.contain('is-hidden');
 		expect(wrapper.find('#simple-mods--3').classes()).to.contain('is-hidden');
+
+		// Object
 		expect(wrapper.find('#simple-mods--4').classes()).to.contain('is-hidden');
 		expect(wrapper.find('#simple-mods--5').classes()).to.contain('is-hidden');
 	});
@@ -40,9 +45,14 @@ describe('vue-css-modifiers', () => {
 	it("removes modifiers properly", () => {
 		setData(wrapper, { isHidden: false });
 
+		// Single string
 		expect(wrapper.find('#simple-mods--1').classes()).not.to.contain('is-hidden');
+
+		// Array of strings
 		expect(wrapper.find('#simple-mods--2').classes()).not.to.contain('is-hidden');
 		expect(wrapper.find('#simple-mods--3').classes()).not.to.contain('is-hidden');
+
+		// Object
 		expect(wrapper.find('#simple-mods--4').classes()).not.to.contain('is-hidden');
 		expect(wrapper.find('#simple-mods--5').classes()).not.to.contain('is-hidden');
 
@@ -50,37 +60,56 @@ describe('vue-css-modifiers', () => {
 	});
 
 	it("doesn't clash with static classes", () => {
+		// Single string
 		expect(wrapper.find('#no-clash--1').classes()).to.contain.all.members(['static-class', 'is-hidden']);
+
+		// Array of strings
 		expect(wrapper.find('#no-clash--2').classes()).to.contain.all.members(['static-class', 'is-hidden']);
 		expect(wrapper.find('#no-clash--3').classes()).to.contain.all.members(['static-class', 'is-hidden']);
+
+		// Object
 		expect(wrapper.find('#no-clash--4').classes()).to.contain.all.members(['static-class', 'is-hidden']);
 		expect(wrapper.find('#no-clash--5').classes()).to.contain.all.members(['static-class', 'is-hidden']);
 
 	});
 
 	it("adds modifiers with a 'is-' suffix when the '.is' modifier is specified", () => {
+		// Class names already starting with 'is-'
 		expect(wrapper.find('#is-mode--1').classes()).to.contain('is-hidden');
 		expect(wrapper.find('#is-mode--2').classes()).to.contain('is-hidden');
+
+		// Class names not starting with 'is-'
 		expect(wrapper.find('#is-mode--3').classes()).to.contain('is-hidden');
 		expect(wrapper.find('#is-mode--4').classes()).to.contain('is-hidden');
 	});
 
 	it("adds modifiers as suffixes of a base class when the '.bem' modifier is specified", () => {
-		expect(wrapper.find('#bem-mode--1').classes()).to.contain('base-class--hidden');
-		expect(wrapper.find('#bem-mode--2').classes()).not.to.contain('base-class--hidden');
-		expect(wrapper.find('#bem-mode--3').classes()).to.contain('base-class--hidden');
-		expect(wrapper.find('#bem-mode--4').classes()).to.contain('base-class--hidden');
-		expect(wrapper.find('#bem-mode--5').classes()).to.contain('base-class--hidden');
+		// With an implicit base class
+		expect(wrapper.find('#bem-mode--implicit--1').classes()).to.contain('base-class--hidden');
+		expect(wrapper.find('#bem-mode--implicit--2').classes()).to.contain('base-class--hidden');
+		expect(wrapper.find('#bem-mode--implicit--3').classes()).to.contain('base-class--hidden');
 
-		expect(wrapper.find('#bem-mode--6').classes()).to.contain('navbar-left--hidden');
-		expect(wrapper.find('#bem-mode--7').classes()).to.contain('navbar-right--hidden');
-		expect(wrapper.find('#bem-mode--8').classes()).to.contain('navbar-right--hidden');
+		// With an implicit but nonexistent base class
+		expect(wrapper.find('#bem-mode--implicit--4').classes()).not.to.contain('--hidden');
+		expect(wrapper.find('#bem-mode--implicit--4').classes()).not.to.contain('base-class--hidden');
 
-		setData(wrapper, { navbarPos: 'left' });
+		// With an implicit base class toggled during execution
+		expect(wrapper.find('#bem-mode--implicit--5').classes()).not.to.contain('toggled-class--hidden');
+		setData(wrapper, { toggledClass: true });
+		expect(wrapper.find('#bem-mode--implicit--5').classes()).to.contain('toggled-class--hidden');
 
-		expect(wrapper.find('#bem-mode--6').classes()).to.contain('navbar-left--hidden');
-		expect(wrapper.find('#bem-mode--7').classes()).not.to.contain('navbar-right--hidden');
-		expect(wrapper.find('#bem-mode--8').classes()).to.contain('navbar-left--hidden');
+		// With an implicit & dynamic base class
+		expect(wrapper.find('#bem-mode--implicit--6').classes()).to.contain('navbar-right--hidden');
+		setData(wrapper, { navbarPos: 'top' });
+		expect(wrapper.find('#bem-mode--implicit--6').classes()).to.contain('navbar-top--hidden');
+
+		// With an explicit base class
+		expect(wrapper.find('#bem-mode--explicit--1').classes()).to.contain('base-class--hidden');
+		expect(wrapper.find('#bem-mode--explicit--2').classes()).to.contain('base-class--hidden');
+		expect(wrapper.find('#bem-mode--explicit--3').classes()).to.contain('base-class--hidden');
+
+		// With an explicit but nonexistent base class
+		expect(wrapper.find('#bem-mode--explicit--4').classes()).not.to.contain('base-class--hidden');
 	});
 
 	it("enforces the correct mode when registered as 'v-is' or 'v-bem'", () => {

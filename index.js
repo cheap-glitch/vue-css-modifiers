@@ -65,14 +65,7 @@ module.exports = function(_el, _binding, _vnode)
 		}
 
 		// Add a class to the element for every key whose value is true
-		Object.keys(value).forEach(function(__key)
-		{
-			// Ignore unchanged values (unless a directive argument is specified, because it might have changed)
-			if (!_binding.arg && (_binding.oldValue && value[__key] === _binding.oldValue[__key]))
-				return;
-
-			setElemClass(camel2Kebab(__key), value[__key], _el, _binding);
-		});
+		Object.keys(value).forEach(__key => setElemClass(camel2Kebab(__key), value[__key], _el, _binding, _vnode));
 	}
 	else
 	{
@@ -99,7 +92,7 @@ function setClassByName(_class, _el, _binding, _vnode)
 	}
 
 	// Add/remove the class on the element depending on the value of the prop
-	setElemClass(_class, value, _el, _binding);
+	setElemClass(_class, value, _el, _binding, _vnode);
 
 	return 0;
 }
@@ -107,7 +100,7 @@ function setClassByName(_class, _el, _binding, _vnode)
 /**
  * Add/remove a class on a DOM element
  */
-function setElemClass(_class, _add, _el, _binding)
+function setElemClass(_class, _add, _el, _binding, _vnode)
 {
 	let className = _class;
 	let baseClass = '';
@@ -135,11 +128,16 @@ function setElemClass(_class, _add, _el, _binding)
 			if ('arg' in _binding)
 			{
 				baseClass = _binding.arg;
+
+				// Don't add the modifier if the base class is absent from the element
+				if (!_vnode.elm._prevClass || !_vnode.elm._prevClass.split(' ').includes(baseClass)) return;
 			}
 			else
 			{
 				// Get all the class names that aren't modifiers themselves
-				const classes = [..._el.classList].filter(__class => !__class.includes('--'));
+				const classes = _vnode.elm._prevClass
+					? _vnode.elm._prevClass.split(' ').filter(__class => !__class.includes('--'))
+					: [];
 
 				// If there is no base class, don't add the modifier
 				if (classes.length == 0) return;
