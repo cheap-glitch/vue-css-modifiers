@@ -23,7 +23,8 @@
   "main": "index.js",
   "scripts": {
     "test": "vue-cli-service test:unit \"test/*.test.js\"",
-    "cover": "nyc npm test"
+    "cover": "nyc npm test",
+    "lint": "eslint *.js test/*.js"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.1",

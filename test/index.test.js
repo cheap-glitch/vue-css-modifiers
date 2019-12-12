@@ -49,12 +49,12 @@ describe('vue-css-modifiers', () => {
 		expect(wrapper.find('#simple-mods--1').classes()).not.to.contain('is-hidden');
 
 		// Array of strings
-		// expect(wrapper.find('#simple-mods--2').classes()).not.to.contain('is-hidden');
-		// expect(wrapper.find('#simple-mods--3').classes()).not.to.contain('is-hidden');
-                //
-		// // Object
-		// expect(wrapper.find('#simple-mods--4').classes()).not.to.contain('is-hidden');
-		// expect(wrapper.find('#simple-mods--5').classes()).not.to.contain('is-hidden');
+		expect(wrapper.find('#simple-mods--2').classes()).not.to.contain('is-hidden');
+		expect(wrapper.find('#simple-mods--3').classes()).not.to.contain('is-hidden');
+
+		// Object
+		expect(wrapper.find('#simple-mods--4').classes()).not.to.contain('is-hidden');
+		expect(wrapper.find('#simple-mods--5').classes()).not.to.contain('is-hidden');
 
 		await setData(wrapper, { isHidden: true });
 	});
