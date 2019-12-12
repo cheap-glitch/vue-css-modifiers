@@ -1,7 +1,7 @@
 {
   "name": "vue-css-modifiers",
   "description": "A tiny Vue directive to simplify the manipulation of CSS modifier classes.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "ISC",
   "repository": {
     "type": "git",
