@@ -19,8 +19,8 @@ Vue.directive('is',   VCSSModifiers);
 Vue.directive('bem',  VCSSModifiers);
 
 const factory  = (_data = {})       => shallowMount(App, { data () { return { ..._data } } });
-const setData  = (_wrapper, _data)  => { _wrapper.setData(_data);   Vue.nextTick(); };
-const setProps = (_wrapper, _props) => { _wrapper.setProps(_props); Vue.nextTick(); };
+const setData  = async (_wrapper, _data)  => { _wrapper.setData(_data);   await Vue.nextTick(); };
+const setProps = async (_wrapper, _props) => { _wrapper.setProps(_props); await Vue.nextTick(); };
 
 /**
  * Tests
@@ -42,8 +42,8 @@ describe('vue-css-modifiers', () => {
 		expect(wrapper.find('#simple-mods--5').classes()).to.contain('is-hidden');
 	});
 
-	it("removes modifiers properly", () => {
-		setData(wrapper, { isHidden: false });
+	it("removes modifiers properly", async () => {
+		await setData(wrapper, { isHidden: false });
 
 		// Single string
 		expect(wrapper.find('#simple-mods--1').classes()).not.to.contain('is-hidden');
@@ -56,7 +56,7 @@ describe('vue-css-modifiers', () => {
 		// expect(wrapper.find('#simple-mods--4').classes()).not.to.contain('is-hidden');
 		// expect(wrapper.find('#simple-mods--5').classes()).not.to.contain('is-hidden');
 
-		setData(wrapper, { isHidden: true });
+		await setData(wrapper, { isHidden: true });
 	});
 
 	it("doesn't clash with static classes", () => {
@@ -83,7 +83,7 @@ describe('vue-css-modifiers', () => {
 		expect(wrapper.find('#is-mode--4').classes()).to.contain('is-hidden');
 	});
 
-	it("adds modifiers as suffixes of an implicit base class when the '.bem' modifier is specified", () => {
+	it("adds modifiers as suffixes of an implicit base class when the '.bem' modifier is specified", async () => {
 		expect(wrapper.find('#bem-mode--implicit--1').classes()).to.contain('base-class--hidden');
 		expect(wrapper.find('#bem-mode--implicit--2').classes()).to.contain('base-class--hidden');
 		expect(wrapper.find('#bem-mode--implicit--3').classes()).to.contain('base-class--hidden');
@@ -94,16 +94,16 @@ describe('vue-css-modifiers', () => {
 
 		// With a base class toggled during execution
 		expect(wrapper.find('#bem-mode--implicit--5').classes()).not.to.contain('toggled-class--hidden');
-		setData(wrapper, { toggledClass: true });
+		await setData(wrapper, { toggledClass: true });
 		expect(wrapper.find('#bem-mode--implicit--5').classes()).to.contain('toggled-class--hidden');
 
 		// With a dynamic base class
 		expect(wrapper.find('#bem-mode--implicit--6').classes()).to.contain('navbar-right--hidden');
-		setData(wrapper, { navbarPos: 'top' });
+		await setData(wrapper, { navbarPos: 'top' });
 		expect(wrapper.find('#bem-mode--implicit--6').classes()).to.contain('navbar-top--hidden');
 	});
 
-	it("adds modifiers as suffixes of an explicit base class when the '.bem' modifier is specified", () => {
+	it("adds modifiers as suffixes of an explicit base class when the '.bem' modifier is specified", async () => {
 		expect(wrapper.find('#bem-mode--explicit--1').classes()).to.contain('base-class--hidden');
 		expect(wrapper.find('#bem-mode--explicit--2').classes()).to.contain('base-class--hidden');
 		expect(wrapper.find('#bem-mode--explicit--3').classes()).to.contain('base-class--hidden');
@@ -113,15 +113,15 @@ describe('vue-css-modifiers', () => {
 		expect(wrapper.find('#bem-mode--explicit--4').classes()).not.to.contain('base-class--hidden');
 
 		// With a base class toggled during execution
-		setData(wrapper, { toggledClass: false });
+		await setData(wrapper, { toggledClass: false });
 		expect(wrapper.find('#bem-mode--explicit--5').classes()).not.to.contain('toggled-class--hidden');
-		setData(wrapper, { toggledClass: true });
+		await setData(wrapper, { toggledClass: true });
 		expect(wrapper.find('#bem-mode--explicit--5').classes()).to.contain('toggled-class--hidden');
 
 		// With a dynamic base class
-		setData(wrapper, { navbarPos: 'right' });
+		await setData(wrapper, { navbarPos: 'right' });
 		expect(wrapper.find('#bem-mode--explicit--6').classes()).to.contain('navbar-right--hidden');
-		setData(wrapper, { navbarPos: 'top' });
+		await setData(wrapper, { navbarPos: 'top' });
 		expect(wrapper.find('#bem-mode--explicit--6').classes()).to.contain('navbar-top--hidden');
 	});
 
@@ -130,12 +130,12 @@ describe('vue-css-modifiers', () => {
 		expect(wrapper.find('#default-mode--2').classes()).to.contain('base-class--hidden');
 	});
 
-	it("works with props too", () => {
+	it("works with props too", async () => {
 		expect(wrapper.find('#props-mods--1').classes()).to.contain('is-opened');
 		expect(wrapper.find('#props-mods--2').classes()).to.contain('is-opened');
 		expect(wrapper.find('#props-mods--3').classes()).to.contain('base-class--opened');
 
-		setProps(wrapper, { isOpened: false, isMaximized: true });
+		await setProps(wrapper, { isOpened: false, isMaximized: true });
 
 		expect(wrapper.find('#props-mods--1').classes()).to.contain('is-maximized');
 		expect(wrapper.find('#props-mods--2').classes()).to.contain('is-maximized');

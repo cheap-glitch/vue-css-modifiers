@@ -22,7 +22,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "vue-cli-service test:unit test/*.test.js",
+    "test": "vue-cli-service test:unit \"test/*.test.js\"",
     "cover": "nyc npm test"
   },
   "devDependencies": {
