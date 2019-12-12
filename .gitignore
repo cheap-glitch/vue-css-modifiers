@@ -1,4 +1,8 @@
-/.nyc-output/
-/node_modules/
 
-/.eslintrc.json
+#
+# .gitignore
+#
+
+# Folders
+/.nyc_output/
+/node_modules/

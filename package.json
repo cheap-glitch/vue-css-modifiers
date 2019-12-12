@@ -1,5 +1,6 @@
 {
   "name": "vue-css-modifiers",
+  "description": "A tiny Vue directive to simplify the manipulation of CSS modifier classes.",
   "version": "1.0.3",
   "license": "ISC",
   "repository": {
@@ -11,7 +12,6 @@
   },
   "author": "cheap-glitch <cheap.glitch@gmail.com> (https://github.com/cheap-glitch)",
   "homepage": "https://github.com/cheap-glitch/vue-css-modifiers#readme",
-  "description": "A tiny Vue directive to simplify the manipulation of CSS modifier classes.",
   "keywords": [
     "vue",
     "vue-directive",
@@ -22,19 +22,23 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "vue-cli-service test:unit \"test/*.test.js\"",
-    "cover": "nyc vue-cli-service test:unit \"test/*.test.js\""
+    "test": "vue-cli-service test:unit test/*.test.js",
+    "cover": "nyc npm test"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.1",
     "@vue/cli-plugin-unit-mocha": "^4.1.1",
     "@vue/cli-service": "^4.1.1",
-    "@vue/test-utils": "1.0.0-beta.29",
+    "@vue/test-utils": "1.0.0-beta.30",
     "chai": "^4.2.0",
+    "eslint-plugin-smarter-tabs": "^1.0.1",
     "nyc": "^14.1.1",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
     "vue": "^2.6.10",
     "vue-template-compiler": "^2.6.10"
+  },
+  "dependencies": {
+    "ajv": "^6.10.2"
   }
 }

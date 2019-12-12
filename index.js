@@ -20,6 +20,8 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
+const AJV = require('ajv');
+
 // The directive will call the function on the 'bind' and 'update' hooks
 module.exports = function(_el, _binding, _vnode, _oldVnode)
 {
@@ -28,59 +30,64 @@ module.exports = function(_el, _binding, _vnode, _oldVnode)
 
 	if (value === undefined || value === null)
 	{
-		logError(`The value of ${name} is null or undefined`);
+		logError(`the value of ${name} is null or undefined`);
 		return -1;
 	}
 
-	// If the value of the expression is a single string
-	if (typeof value === 'string')
-	{
-		return setClassByName(value, _el, _binding, _vnode);
-	}
-	// If the value of the expression is an array
-	else if (Array.isArray(value))
-	{
-		// Check that all of its values are strings
-		if (!value.every(__key => typeof __key === 'string'))
-		{
-			logError(`When the value of ${name} is an array, all of its values must be strings`);
-			return -1;
-		}
+	// Validate the value passed to the directive
+	const validator = new AJV();
+	if (!validator.validate({
+		type: ['string', 'array', 'object'],
 
+		// If the value is an array, all of its values must be strings
+		items: { type: 'string' },
+
+		// If the value is an object, all of its values must be booleans
+		patternProperties: { '.': { type: 'boolean' } }
+	}, value))
+	{
+		logError(validator.errorsText().replace(/^data/, 'value'));
+		return -1;
+	}
+
+	/**
+	 * String value
+	 * ---------------------------------------------------------------------
+	 */
+	if (typeof value == 'string')
+		return setClassByName(value, _el, _binding, _vnode);
+
+	/**
+	 * Array value
+	 * ---------------------------------------------------------------------
+	 */
+	if (Array.isArray(value))
+	{
 		for (let i=0; i<value.length; i++)
+		{
 			if (setClassByName(value[i], _el, _binding, _vnode) == -1)
 				return -1;
-	}
-	// If the value is an object
-	else if (value === Object(value))
-	{
-		// Check that all of its values are booleans
-		if (!Object.keys(value).every(__key => typeof value[__key] === 'boolean'))
-		{
-			logError(`When the value of ${name} is an object, all of its values must be booleans`);
-			return -1;
 		}
 
-		// Check if BEM mode is activated
-		const isBEM = ('bem' in _binding.modifiers === true || _binding.name == 'bem');
-		// Check if the classes on the VNode have changed
-		const sameClasses = checkIfSameClasses(_vnode, _oldVnode);
-
-		// Add a class to the element for every key whose value is true
-		Object.keys(value).forEach(function(__key)
-		{
-			// Ignore unchanged values
-			if (_binding.oldValue && value[__key] === _binding.oldValue[__key] && (!isBEM || sameClasses))
-				return;
-
-			setElemClass(camel2Kebab(__key), value[__key], _el, _binding, _vnode);
-		});
+		return 0;
 	}
-	else
+
+	/**
+	 * Object value
+	 * ---------------------------------------------------------------------
+	 */
+	const isBEM       = ('bem' in _binding.modifiers === true || _binding.name == 'bem');
+	const sameClasses = checkIfSameClasses(_vnode, _oldVnode);
+
+	// Add a class to the element for every key whose value is true
+	Object.keys(value).forEach(function(__key)
 	{
-		logError(`The value of ${name} must either be a string, an array of strings or an object whose values are all booleans`);
-		return -1;
-	}
+		// Ignore unchanged values
+		if (_binding.oldValue && value[__key] === _binding.oldValue[__key] && (!isBEM || sameClasses))
+			return;
+
+		setElemClass(camel2Kebab(__key), value[__key], _el, _binding, _vnode);
+	});
 
 	return 0;
 }
@@ -96,7 +103,7 @@ function setClassByName(_class, _el, _binding, _vnode)
 	// Check that the corresponding property is defined
 	if (value === undefined || value === null)
 	{
-		logError(`Property "${prop}" is undefined or null`);
+		logError(`property "${prop}" is undefined or null`);
 		return -1;
 	}
 
@@ -128,7 +135,7 @@ function setElemClass(_class, _add, _el, _binding, _vnode)
 		// Add 'is-' at the beginning of every modifier
 		// class name (unless the name already starts with '-is')
 		case 'force-is-prefix':
-			className = className.match(/^is-/) ? className : `is-${className}`;
+			className = /^is-/.test(className) ? className : `is-${className}`;
 			break;
 
 		// Make the modifiers suffixes of a base class name
