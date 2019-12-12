@@ -22,6 +22,18 @@
 
 const AJV = require('ajv');
 
+// Create the validator for values passed to the directive
+const validator = new AJV();
+const validate  = validator.compile({
+	type: ['string', 'array', 'object'],
+
+	// If the value is an array, all of its values must be strings
+	items: { type: 'string' },
+
+	// If the value is an object, all of its values must be booleans
+	patternProperties: { '.': { type: 'boolean' } }
+});
+
 // The directive will call the function on the 'bind' and 'update' hooks
 module.exports = function(_el, _binding, _vnode, _oldVnode)
 {
@@ -33,18 +45,7 @@ module.exports = function(_el, _binding, _vnode, _oldVnode)
 		logError(`the value of ${name} is null or undefined`);
 		return -1;
 	}
-
-	// Validate the value passed to the directive
-	const validator = new AJV();
-	if (!validator.validate({
-		type: ['string', 'array', 'object'],
-
-		// If the value is an array, all of its values must be strings
-		items: { type: 'string' },
-
-		// If the value is an object, all of its values must be booleans
-		patternProperties: { '.': { type: 'boolean' } }
-	}, value))
+	if (!validate(value))
 	{
 		logError(validator.errorsText().replace(/^data/, 'value'));
 		return -1;
