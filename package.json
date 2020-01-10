@@ -21,23 +21,27 @@
     "bem-modifiers"
   ],
   "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
   "scripts": {
-    "test": "vue-cli-service test:unit \"test/*.test.js\"",
-    "cover": "nyc npm test",
-    "lint": "eslint *.js test/*.js"
+    "lint": "eslint *.js tests/*.js",
+    "test": "vue-cli-service test:unit \"tests/*.test.js\"",
+    "cover": "nyc npm test"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.1.1",
-    "@vue/cli-plugin-unit-mocha": "^4.1.1",
-    "@vue/cli-service": "^4.1.1",
+    "@vue/cli-plugin-babel": "^4.1.2",
+    "@vue/cli-plugin-unit-mocha": "^4.1.2",
+    "@vue/cli-service": "^4.1.2",
     "@vue/test-utils": "1.0.0-beta.30",
     "chai": "^4.2.0",
-    "eslint-plugin-smarter-tabs": "^1.0.1",
-    "nyc": "^14.1.1",
+    "eslint": "^6.8.0",
+    "eslint-plugin-smarter-tabs": "^1.1.0",
+    "nyc": "^15.0.0",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
-    "vue": "^2.6.10",
-    "vue-template-compiler": "^2.6.10"
+    "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
     "ajv": "^6.10.2"

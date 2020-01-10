@@ -23,8 +23,8 @@
 const AJV = require('ajv');
 
 // Create the validator for values passed to the directive
-const validator = new AJV();
-const validate  = validator.compile({
+const ajv       = new AJV();
+const validator = ajv.compile({
 	type: ['string', 'array', 'object'],
 
 	// If the value is an array, all of its values must be strings
@@ -45,9 +45,9 @@ module.exports = function(_el, _binding, _vnode, _oldVnode)
 		logError(`the value of ${name} is null or undefined`);
 		return -1;
 	}
-	if (!validate(value))
+	if (!validator(value))
 	{
-		logError(validator.errorsText().replace(/^data/, 'value'));
+		logError(ajv.errorsText().replace(/^data/, 'value'));
 		return -1;
 	}
 

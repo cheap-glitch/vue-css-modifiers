@@ -80,7 +80,7 @@ Examples:
 	<!-- With the string expression, the class name will be added/removed
 	     if the property with the corresponding camel case name is true/false -->
 	<div v-mods="'is-hidden'"></div>
-	<!-- Output: <div clas="is-hidden"></div> -->
+	<!-- Output: <div class="is-hidden"></div> -->
 
 	<!-- Same thing but with several classes -->
 	<div v-mods="['is-hidden', 'is-flipped', 'is-height-fixed']"></div>
