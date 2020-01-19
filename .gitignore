@@ -3,6 +3,8 @@
 # .gitignore
 #
 
-# Folders
-/.nyc_output/
 /node_modules/
+
+# Code coverage & reports
+/.codecov.yml
+/.nyc_output/

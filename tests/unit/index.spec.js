@@ -1,6 +1,6 @@
 
 /**
- * tests/index.test.js
+ * tests/index.spec.js
  */
 
 import Vue              from 'vue'
@@ -8,7 +8,7 @@ import { expect }       from 'chai'
 import { shallowMount } from '@vue/test-utils'
 
 import App              from './App.vue'
-import VCSSModifiers    from '../index'
+import VCSSModifiers    from '../../index'
 
 /**
  * Setup

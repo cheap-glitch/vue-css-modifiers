@@ -26,8 +26,12 @@
   },
   "scripts": {
     "lint": "eslint *.js tests/*.js",
-    "test": "vue-cli-service test:unit \"tests/*.test.js\"",
-    "coverage": "nyc npm test"
+    "test": "vue-cli-service test:unit",
+    "coverage": "nyc npm test",
+    "report-coverage": "npm run coverage && nyc report --reporter=text-lcov | codecov --pipe"
+  },
+  "dependencies": {
+    "ajv": "^6.11.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.2",
@@ -42,8 +46,5 @@
     "pug-plain-loader": "^1.0.0",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11"
-  },
-  "dependencies": {
-    "ajv": "^6.10.2"
   }
 }
