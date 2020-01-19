@@ -25,7 +25,7 @@
     "test": "tests"
   },
   "scripts": {
-    "lint": "eslint *.js tests/*.js",
+    "lint": "eslint *.js tests/unit/*.js",
     "test": "vue-cli-service test:unit",
     "coverage": "nyc npm test",
     "report-coverage": "npm run coverage && nyc report --reporter=text-lcov | codecov --pipe"
