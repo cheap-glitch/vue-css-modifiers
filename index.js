@@ -47,7 +47,7 @@ module.exports = function(_el, _binding, _vnode, _oldVnode)
 	}
 	if (!validator(value))
 	{
-		logError(ajv.errorsText().replace(/^data/, 'value'));
+		logError(ajv.errorsText(validator.errors).replace(/^data/, 'value'));
 		return -1;
 	}
 
