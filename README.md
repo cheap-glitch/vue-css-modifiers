@@ -7,7 +7,7 @@
 modifier classes.
 
 The following code:
-```vue
+```html
 <template>
 	<div :class="{ 'is-hidden': isHidden, 'is-flipped': isFlipped, 'is-height-fixed': isHeightFixed }">
 	</div>
@@ -27,7 +27,7 @@ The following code:
 ```
 
 becomes:
-```vue
+```html
 <template>
 	<div v-mods="{ isHidden, isFlipped, isHeightFixed }"></div>
 </template>
@@ -77,11 +77,11 @@ Call the directive using one of the following expressions:
  * an object whose keys are properties and values booleans
 
 Examples:
-```vue
-
+```html
 <template>
-	<!-- With the string expression, the class name will be added/removed
-	     if the property with the corresponding camel case name is true/false -->
+	<!-- With the string expression, the class name will be
+	     added/removed if the property with the corresponding
+	     camel case name is true/false -->
 	<div v-mods="'is-hidden'"></div>
 	<!-- Output: <div class="is-hidden"></div> -->
 
@@ -89,9 +89,10 @@ Examples:
 	<div v-mods="['is-hidden', 'is-flipped', 'is-height-fixed']"></div>
 	<!-- Output: <div class="is-hidden is-height-fixed"></div> -->
 
-	<!-- With an object expression, the names of the properties will be converted to kebab case -->
-	<div v-mods="{ isHidden, isFlipped, isHeightFixed, isSpinning: name === 'spinner' }"></div>
-	<!-- Output: <div class="is-hidden is-height-fixed is-spinning"></div> -->
+	<!-- With an object expression, the names of the properties will be
+	     converted to kebab case -->
+	<div v-mods="{ isHeightFixed, isSpinning: name === 'spinner' }"></div>
+	<!-- Output: <div class="is-height-fixed is-spinning"></div> -->
 
 	<!-- Works with both props and data -->
 	<div v-mods="{ isOpened, isHeightFixed }"></div>
@@ -125,7 +126,7 @@ Examples:
 ### Syntax modifiers
 
 Use the `is` modifier to automatically prefix all modifier classes with `is-`:
-```vue
+```html
 <div v-mods.is="{ hidden, isHeightFixed }"></div>
 <!-- Output: <div class="is-hidden, is-height-fixed"></div> -->
 ```
@@ -135,7 +136,7 @@ This base class can either be  defined explicitly  through a directive argument,
 or left implicit (in that case, the directive will use the first class it founds
 that is not a BEM modifier). Either way, if the base class is not present on the
 element, the modifier will not be added.
-```vue
+```html
 <!-- Implicit base class -->
 <div class="navbar" v-mods.bem="{ hidden }"></div>
 <!-- Output: <div class="navbar navbar––hidden"></div> -->
@@ -146,13 +147,15 @@ element, the modifier will not be added.
 
 <!-- Dynamic base class -->
 <div :class="`menu-${menuPos}`" v-mods:menu-top.bem="{ hidden }"></div>
-<!-- Output: <div class="menu-bottom"></div>               (menuPos == 'bottom') -->
-<!--         <div class="menu-top menu-top––hidden"></div> (menuPos == 'top')    -->
+<!-- Output:
+       <div class="menu-bottom"></div>               (menuPos == 'bottom')
+       <div class="menu-top menu-top––hidden"></div> (menuPos == 'top')
+-->
 
 <!-- Dynamic base class with dynamic argument -->
-<div :class="`navbar-${navbarPos}`" v-mods:[`navbar-${navbarPos}`].bem="{ hidden }"></div>
+<div :class="`navbar-${navbarPos}`" v-mods:[`navbar-${navbarPos}`].bem="{ hidden }">
+</div>
 <!-- Output: <div class="navbar-left navbar-left––hidden"></div> -->
-
 ```
 
 ### Using 'is-' or BEM syntax by default
@@ -171,7 +174,7 @@ Vue.directive('bem', VueCSSModifiers);
 // […]
 ```
 
-```vue
+```html
 <div class="navbar" v-is="{ hidden }"></div>
 <!-- Output: <div class="navbar is-hidden"></div> -->
 
