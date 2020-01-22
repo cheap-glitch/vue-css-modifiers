@@ -18,7 +18,8 @@ Vue.directive('mods', VCSSModifiers);
 Vue.directive('is',   VCSSModifiers);
 Vue.directive('bem',  VCSSModifiers);
 
-const factory  = (_data = {})       => shallowMount(App, { data () { return { ..._data } } });
+const factory  = (_data = {}) => shallowMount(App, { data () { return { ..._data } } });
+
 const setData  = async (_wrapper, _data)  => { _wrapper.setData(_data);   await Vue.nextTick(); };
 const setProps = async (_wrapper, _props) => { _wrapper.setProps(_props); await Vue.nextTick(); };
 
