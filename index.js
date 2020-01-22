@@ -64,11 +64,9 @@ module.exports = function(_el, _binding, _vnode, _oldVnode)
 	 */
 	if (Array.isArray(value))
 	{
-		for (let i=0; i<value.length; i++)
-		{
-			if (setClassByName(value[i], _el, _binding, _vnode) == -1)
+		for (const val of value)
+			if (setClassByName(val, _el, _binding, _vnode) == -1)
 				return -1;
-		}
 
 		return 0;
 	}
@@ -77,7 +75,7 @@ module.exports = function(_el, _binding, _vnode, _oldVnode)
 	 * Object value
 	 * ---------------------------------------------------------------------
 	 */
-	const isBEM       = ('bem' in _binding.modifiers === true || _binding.name == 'bem');
+	const isBEM       = ('bem' in _binding.modifiers || _binding.name == 'bem');
 	const sameClasses = checkIfSameClasses(_vnode, _oldVnode);
 
 	// Add a class to the element for every key whose value is true
@@ -157,7 +155,7 @@ function setElemClass(_class, _add, _el, _binding, _vnode)
 					: [];
 
 				// If there is no base class, don't add the modifier
-				if (classes.length == 0) return;
+				if (!classes.length) return;
 
 				// Else, take the first class of the list
 				baseClass = classes[0];
