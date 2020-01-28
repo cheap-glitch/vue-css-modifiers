@@ -35,10 +35,10 @@ const validator = ajv.compile({
 });
 
 // The directive will call the function on the 'bind' and 'update' hooks
-module.exports = function(_el, _binding, _vnode, _oldVnode)
+module.exports = function(el, binding, vnode, oldVnode)
 {
-	const name  = `"v-${_binding.name}"`;
-	const value = _binding.value;
+	const name  = `"v-${binding.name}"`;
+	const value = binding.value;
 
 	if (value === undefined || value === null)
 	{
@@ -56,7 +56,7 @@ module.exports = function(_el, _binding, _vnode, _oldVnode)
 	 * ---------------------------------------------------------------------
 	 */
 	if (typeof value == 'string')
-		return setClassByName(value, _el, _binding, _vnode);
+		return setClassByName(value, el, binding, vnode);
 
 	/**
 	 * Array value
@@ -65,7 +65,7 @@ module.exports = function(_el, _binding, _vnode, _oldVnode)
 	if (Array.isArray(value))
 	{
 		for (const val of value)
-			if (setClassByName(val, _el, _binding, _vnode) == -1)
+			if (setClassByName(val, el, binding, vnode) == -1)
 				return -1;
 
 		return 0;
@@ -75,17 +75,17 @@ module.exports = function(_el, _binding, _vnode, _oldVnode)
 	 * Object value
 	 * ---------------------------------------------------------------------
 	 */
-	const isBEM       = ('bem' in _binding.modifiers || _binding.name == 'bem');
-	const sameClasses = checkIfSameClasses(_vnode, _oldVnode);
+	const isBEM       = ('bem' in binding.modifiers || binding.name == 'bem');
+	const sameClasses = checkIfSameClasses(vnode, oldVnode);
 
 	// Add a class to the element for every key whose value is true
-	Object.keys(value).forEach(function(__key)
+	Object.keys(value).forEach(function(key)
 	{
 		// Ignore unchanged values
-		if (_binding.oldValue && value[__key] === _binding.oldValue[__key] && (!isBEM || sameClasses))
+		if (binding.oldValue && value[key] === binding.oldValue[key] && (!isBEM || sameClasses))
 			return;
 
-		setElemClass(camel2Kebab(__key), value[__key], _el, _binding, _vnode);
+		setElemClass(camel2Kebab(key), value[key], el, binding, vnode);
 	});
 
 	return 0;
@@ -94,10 +94,10 @@ module.exports = function(_el, _binding, _vnode, _oldVnode)
 /**
  * Add/remove the class 'class-name' depending on the value of the property 'className'
  */
-function setClassByName(_class, _el, _binding, _vnode)
+function setClassByName(className, el, binding, vnode)
 {
-	const prop  = kebab2Camel(_class);
-	const value = _vnode.context._data[prop];
+	const prop  = kebab2Camel(className);
+	const value = vnode.context._data[prop];
 
 	// Check that the corresponding property is defined
 	if (value === undefined || value === null)
@@ -107,7 +107,7 @@ function setClassByName(_class, _el, _binding, _vnode)
 	}
 
 	// Add/remove the class on the element depending on the value of the prop
-	setElemClass(_class, value, _el, _binding, _vnode);
+	setElemClass(className, value, el, binding, vnode);
 
 	return 0;
 }
@@ -115,19 +115,18 @@ function setClassByName(_class, _el, _binding, _vnode)
 /**
  * Add/remove a class on a DOM element
  */
-function setElemClass(_class, _add, _el, _binding, _vnode)
+function setElemClass(className, add, el, binding, vnode)
 {
-	let className = _class;
 	let baseClass = '';
 
 	// Get the mode from the directive modifiers
 	let mode = 'default';
-	if ('is'  in _binding.modifiers) mode = 'force-is-prefix';
-	if ('bem' in _binding.modifiers) mode = 'bem';
+	if ('is'  in binding.modifiers) mode = 'force-is-prefix';
+	if ('bem' in binding.modifiers) mode = 'bem';
 
 	// Enforce a mode if the name of the directive is that of the corresponding directive modifier
-	if (_binding.name == 'is')  mode = 'force-is-prefix';
-	if (_binding.name == 'bem') mode = 'bem';
+	if (binding.name == 'is')  mode = 'force-is-prefix';
+	if (binding.name == 'bem') mode = 'bem';
 
 	switch (mode)
 	{
@@ -140,18 +139,18 @@ function setElemClass(_class, _add, _el, _binding, _vnode)
 		// Make the modifiers suffixes of a base class name
 		case 'bem':
 			// If a base class is provided as an argument
-			if ('arg' in _binding)
+			if ('arg' in binding)
 			{
-				baseClass = _binding.arg;
+				baseClass = binding.arg;
 
 				// Don't add the modifier if the base class is absent from the element
-				if (!_vnode.elm._prevClass || !_vnode.elm._prevClass.split(' ').includes(baseClass)) return;
+				if (!vnode.elm._prevClass || !vnode.elm._prevClass.split(' ').includes(baseClass)) return;
 			}
 			else
 			{
 				// Get all the class names that aren't modifiers themselves
-				const classes = _vnode.elm._prevClass
-					? _vnode.elm._prevClass.split(' ').filter(__class => !__class.includes('--'))
+				const classes = vnode.elm._prevClass
+					? vnode.elm._prevClass.split(' ').filter(prevClassName => !prevClassName.includes('--'))
 					: [];
 
 				// If there is no base class, don't add the modifier
@@ -166,19 +165,19 @@ function setElemClass(_class, _add, _el, _binding, _vnode)
 			break;
 	}
 
-	if (_add) _el.classList.add(className); else _el.classList.remove(className);
+	if (add) el.classList.add(className); else el.classList.remove(className);
 }
 
 /**
  * Return 'true' if the classes are the same between the two VNodes, 'false' otherwise
  */
-function checkIfSameClasses(_vnode, _oldVnode)
+function checkIfSameClasses(vnode, oldVnode)
 {
-	if (!_oldVnode || !_vnode.data.class || !_oldVnode.data.class)
+	if (!oldVnode || !vnode.data.class || !oldVnode.data.class)
 		return false;
 
-	const classes    = _vnode.data.class;
-	const oldClasses = _oldVnode.data.class;
+	const classes    = vnode.data.class;
+	const oldClasses = oldVnode.data.class;
 
 	if (typeof classes != typeof oldClasses)
 		return false;
@@ -187,14 +186,14 @@ function checkIfSameClasses(_vnode, _oldVnode)
 		return classes === oldClasses;
 
 	if (Array.isArray(classes))
-		return (classes.length == oldClasses.length) && classes.every(_class => oldClasses.includes(_class));
+		return (classes.length == oldClasses.length) && classes.every(className => oldClasses.includes(className));
 
 	if (classes === Object(classes))
 	{
 		const keys    = Object.keys(classes);
 		const oldKeys = Object.keys(oldClasses);
 
-		return (keys.length == oldKeys.length) && keys.every(_key => oldKeys.includes(_key) && classes[_key] === oldClasses[_key])
+		return (keys.length == oldKeys.length) && keys.every(key => oldKeys.includes(key) && classes[key] === oldClasses[key])
 	}
 
 	return false;
@@ -203,10 +202,10 @@ function checkIfSameClasses(_vnode, _oldVnode)
 /**
  * Convert a kebab-cased string to camel case and conversely
  */
-function kebab2Camel(_str) { return _str.replace(/-[a-z0-9]/g,     __match => __match.toUpperCase()[1]);    }
-function camel2Kebab(_str) { return _str.replace(/(?:[A-Z]|\d+)/g, __match => `-${__match.toLowerCase()}`); }
+function kebab2Camel(str) { return str.replace(/-[a-z0-9]/g,     match => match.toUpperCase()[1]);    }
+function camel2Kebab(str) { return str.replace(/(?:[A-Z]|\d+)/g, match => `-${match.toLowerCase()}`); }
 
 /**
  * Output an error in the dev console
  */
-function logError(_msg) { console.error(`[vue-css-modifiers]: ${_msg}`); }
+function logError(msg) { console.error(`[vue-css-modifiers]: ${msg}`); }

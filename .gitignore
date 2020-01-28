@@ -5,6 +5,6 @@
 
 /node_modules/
 
-# Code coverage & reports
+# Code coverage
 /.codecov.yml
 /.nyc_output/
