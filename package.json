@@ -31,7 +31,7 @@
     "report-coverage": "npm run coverage && nyc report --reporter=text-lcov | codecov --pipe"
   },
   "dependencies": {
-    "ajv": "^6.11.0"
+    "ajv": "^6.12.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.2",
