@@ -11,23 +11,23 @@ div.App(:class="{ 'test': toggledClass }")
 	//- Test that errors are properly thrown
 	//----------------------------------------------------------------------
 
-		//- Expression value is undefined
-		div(v-mods="undefProp")
-		//- Expression value is null
-		div(v-mods="null")
+	//- Expression value is undefined
+	div(v-mods="undefProp")
+	//- Expression value is null
+	div(v-mods="null")
 
-		//- Mixed array
-		div(v-mods="['is-hidden', false, 3]")
-		//- Mixed object
-		div(v-mods="{ isHidden, isFlipped: 'no' }")
+	//- Mixed array
+	div(v-mods="['is-hidden', false, 3]")
+	//- Mixed object
+	div(v-mods="{ isHidden, isFlipped: 'no' }")
 
-		//- Other unsupported expressions
-		div(v-mods="2")
-		div(v-mods="true")
+	//- Other unsupported expressions
+	div(v-mods="2")
+	div(v-mods="true")
 
-		//- Class names with no corresponding data properties
-		div(v-mods="'is-fixed'")
-		div(v-mods="['is-hidden', 'is-fixed']")
+	//- Class names with no corresponding data properties
+	div(v-mods="'is-fixed'")
+	div(v-mods="['is-hidden', 'is-fixed']")
 
 	//----------------------------------------------------------------------
 	//- Test that modifiers are properly added/removed
