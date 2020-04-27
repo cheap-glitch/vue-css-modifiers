@@ -8,15 +8,15 @@ import { expect }       from 'chai'
 import { shallowMount } from '@vue/test-utils'
 
 import App              from './App.vue'
-import VCSSModifiers    from '../index'
+import VueCSSModifiers  from '../index'
 
 /**
  * Setup
  * -----------------------------------------------------------------------------
  */
-Vue.directive('mods', VCSSModifiers);
-Vue.directive('is',   VCSSModifiers);
-Vue.directive('bem',  VCSSModifiers);
+Vue.directive('mods', VueCSSModifiers);
+Vue.directive('is',   VueCSSModifiers);
+Vue.directive('bem',  VueCSSModifiers);
 
 const factory  = (data = {}) => shallowMount(App, { data () { return { ...data } } });
 

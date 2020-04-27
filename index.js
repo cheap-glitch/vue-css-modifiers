@@ -23,7 +23,7 @@
 // The directive will call the function on the 'bind' and 'update' hooks
 module.exports = function(el, binding, vnode, oldVnode)
 {
-	const name  = `"v-${binding.name}"`;
+	const name  = `v-${binding.name}`;
 	const value = binding.value;
 
 	if (value === undefined || value === null)
@@ -31,7 +31,7 @@ module.exports = function(el, binding, vnode, oldVnode)
 		logError(`"${name}" is null or undefined`);
 		return -1;
 	}
-	if (!['string', 'object'].includes(typeof value) && !Array.isArray(value))
+	if (!['string', 'object'].includes(typeof value))
 	{
 		logError(`"${name}" must be a string, an array or an object`);
 		return -1;
@@ -41,7 +41,7 @@ module.exports = function(el, binding, vnode, oldVnode)
 		logError(`all the values of array "${name}" must be strings`);
 		return -1;
 	}
-	if (typeof value == 'object' && !Object.keys(value).every(key => typeof value[key] == 'boolean'))
+	if (Object.prototype.toString.call(value) == '[object Object]' && !Object.keys(value).every(key => typeof value[key] == 'boolean'))
 	{
 		logError(`all the values of object "${name}" must be booleans`);
 		return -1;
@@ -179,24 +179,22 @@ function checkIfSameClasses(vnode, oldVnode)
 	const classes    = vnode.data.class;
 	const oldClasses = oldVnode.data.class;
 
-	if (typeof classes != typeof oldClasses)
+	if (!['string', 'object'].includes(typeof classes) || typeof classes != typeof oldClasses)
 		return false;
 
+	// Single class
 	if (typeof classes == 'string')
-		return classes === oldClasses;
+		return classes == oldClasses;
 
+	// Array of classes
 	if (Array.isArray(classes))
 		return (classes.length == oldClasses.length) && classes.every(className => oldClasses.includes(className));
 
-	if (classes === Object(classes))
-	{
-		const keys    = Object.keys(classes);
-		const oldKeys = Object.keys(oldClasses);
+	// Hashmap
+	const keys    = Object.keys(classes);
+	const oldKeys = Object.keys(oldClasses);
 
-		return (keys.length == oldKeys.length) && keys.every(key => oldKeys.includes(key) && classes[key] === oldClasses[key])
-	}
-
-	return false;
+	return (keys.length == oldKeys.length) && keys.every(key => oldKeys.includes(key) && classes[key] == oldClasses[key])
 }
 
 /**
