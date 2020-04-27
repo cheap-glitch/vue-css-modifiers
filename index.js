@@ -20,20 +20,6 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
-const AJV = require('ajv');
-
-// Create the validator for values passed to the directive
-const ajv       = new AJV();
-const validator = ajv.compile({
-	type: ['string', 'array', 'object'],
-
-	// If the value is an array, all of its values must be strings
-	items: { type: 'string' },
-
-	// If the value is an object, all of its values must be booleans
-	patternProperties: { '.': { type: 'boolean' } }
-});
-
 // The directive will call the function on the 'bind' and 'update' hooks
 module.exports = function(el, binding, vnode, oldVnode)
 {
@@ -42,12 +28,22 @@ module.exports = function(el, binding, vnode, oldVnode)
 
 	if (value === undefined || value === null)
 	{
-		logError(`the value of ${name} is null or undefined`);
+		logError(`"${name}" is null or undefined`);
 		return -1;
 	}
-	if (!validator(value))
+	if (!['string', 'object'].includes(typeof value) && !Array.isArray(value))
 	{
-		logError(ajv.errorsText(validator.errors).replace(/^data/, 'value'));
+		logError(`"${name}" must be a string, an array or an object`);
+		return -1;
+	}
+	if (Array.isArray(value) && !value.every(elem => typeof elem == 'string'))
+	{
+		logError(`all the values of array "${name}" must be strings`);
+		return -1;
+	}
+	if (typeof value == 'object' && !Object.keys(value).every(key => typeof value[key] == 'boolean'))
+	{
+		logError(`all the values of object "${name}" must be booleans`);
 		return -1;
 	}
 
@@ -130,13 +126,17 @@ function setElemClass(className, add, el, binding, vnode)
 
 	switch (mode)
 	{
-		// Add 'is-' at the beginning of every modifier
-		// class name (unless the name already starts with '-is')
+		/**
+		 * Add 'is-' at the beginning of every modifier
+		 * class name (unless the name already starts with '-is')
+		 */
 		case 'force-is-prefix':
 			className = /^is-/.test(className) ? className : `is-${className}`;
 			break;
 
-		// Make the modifiers suffixes of a base class name
+		/**
+		 * Make the modifiers suffixes of a base class name
+		 */
 		case 'bem':
 			// If a base class is provided as an argument
 			if ('arg' in binding)

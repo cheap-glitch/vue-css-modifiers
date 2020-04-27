@@ -31,13 +31,11 @@
     "test": "npm run test:unit -- ",
     "test:unit": "vue-cli-service test:unit 'test/*.test.js'"
   },
-  "dependencies": {
-    "ajv": "^6.12.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.3.0",
-    "@vue/cli-plugin-unit-mocha": "^4.3.0",
-    "@vue/cli-service": "^4.3.0",
+    "@vue/cli-plugin-babel": "^4.3.1",
+    "@vue/cli-plugin-unit-mocha": "^4.3.1",
+    "@vue/cli-service": "^4.3.1",
     "@vue/test-utils": "1.0.0-beta.32",
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
