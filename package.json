@@ -27,9 +27,9 @@
   "scripts": {
     "coverage": "nyc npm test",
     "coverage:report": "npm run coverage && nyc report --reporter=text-lcov | codecov --pipe --disable=gcov",
-    "lint": "eslint '**/*.js'",
+    "lint": "eslint . --ext .js --ignore-path .gitignore",
     "test": "npm run test:unit -- ",
-    "test:unit": "vue-cli-service test:unit 'test/*.test.js'"
+    "test:unit": "vue-cli-service test:unit test/*.test.js"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.9",
@@ -37,7 +37,7 @@
     "@vue/cli-service": "^4.5.9",
     "@vue/test-utils": "^1.1.1",
     "chai": "^4.2.0",
-    "eslint": "^7.14.0",
+    "eslint": "^7.15.0",
     "eslint-plugin-smarter-tabs": "^1.1.2",
     "nyc": "^15.1.0",
     "pug": "^3.0.0",
