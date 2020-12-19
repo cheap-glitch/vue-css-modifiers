@@ -35,13 +35,13 @@
     "@vue/cli-plugin-babel": "^4.5.9",
     "@vue/cli-plugin-unit-mocha": "^4.5.9",
     "@vue/cli-service": "^4.5.9",
-    "@vue/test-utils": "^1.1.1",
+    "@vue/test-utils": "^1.1.2",
     "chai": "^4.2.0",
-    "eslint": "^7.15.0",
+    "eslint": "^7.16.0",
     "eslint-plugin-smarter-tabs": "^1.1.2",
     "nyc": "^15.1.0",
     "pug": "^3.0.0",
-    "pug-plain-loader": "^1.0.0",
+    "pug-plain-loader": "^1.1.0",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11"
   }
