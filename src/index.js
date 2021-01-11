@@ -31,22 +31,22 @@ module.exports = function(el, binding, vnode, oldVnode) {
 		logError(`"${name}" must be a string, an array or an object`);
 		return -1;
 	}
-	if (Array.isArray(value) && !value.every(elem => typeof elem == 'string')) {
+	if (Array.isArray(value) && !value.every(elem => typeof elem === 'string')) {
 		logError(`all the values of array "${name}" must be strings`);
 		return -1;
 	}
-	if (Object.prototype.toString.call(value) == '[object Object]' && !Object.keys(value).every(key => typeof value[key] == 'boolean')) {
+	if (Object.prototype.toString.call(value) === '[object Object]' && !Object.keys(value).every(key => typeof value[key] === 'boolean')) {
 		logError(`all the values of object "${name}" must be booleans`);
 		return -1;
 	}
 
-	if (typeof value == 'string') {
+	if (typeof value === 'string') {
 		return setClassByName(value, el, binding, vnode);
 	}
 
 	if (Array.isArray(value)) {
 		for (const val of value) {
-			if (setClassByName(val, el, binding, vnode) == -1) {
+			if (setClassByName(val, el, binding, vnode) === -1) {
 				return -1;
 			}
 		}
@@ -54,13 +54,13 @@ module.exports = function(el, binding, vnode, oldVnode) {
 		return 0;
 	}
 
-	const isBEM       = ('bem' in binding.modifiers || binding.name === 'bem');
+	const isBem       = ('bem' in binding.modifiers || binding.name === 'bem');
 	const sameClasses = checkIfSameClasses(vnode, oldVnode);
 
 	// Add a class to the element for every key whose value is `true`
 	for (const key of Object.keys(value)) {
 		// Ignore unchanged values
-		if (binding.oldValue && value[key] === binding.oldValue[key] && (!isBEM || sameClasses)) {
+		if (binding.oldValue && value[key] === binding.oldValue[key] && (!isBem || sameClasses)) {
 			continue;
 		}
 
@@ -68,7 +68,7 @@ module.exports = function(el, binding, vnode, oldVnode) {
 	}
 
 	return 0;
-}
+};
 
 /**
  * Add/remove the class `class-name` depending on the value of the property `className`
@@ -97,12 +97,20 @@ function setElemClass(className, add, el, binding, vnode) {
 
 	// Get the mode from the directive modifiers
 	let mode = 'default';
-	if ('is'  in binding.modifiers) mode = 'force-is-prefix';
-	if ('bem' in binding.modifiers) mode = 'bem';
+	if ('is' in binding.modifiers) {
+		mode = 'force-is-prefix';
+	}
+	if ('bem' in binding.modifiers) {
+		mode = 'bem';
+	}
 
 	// Enforce a mode if the name of the directive is that of the corresponding directive modifier
-	if (binding.name == 'is')  mode = 'force-is-prefix';
-	if (binding.name == 'bem') mode = 'bem';
+	if (binding.name === 'is')  {
+		mode = 'force-is-prefix';
+	}
+	if (binding.name === 'bem') {
+		mode = 'bem';
+	}
 
 	switch (mode) {
 		/**
@@ -110,7 +118,7 @@ function setElemClass(className, add, el, binding, vnode) {
 		 * class name (unless the name already starts with `-is`)
 		 */
 		case 'force-is-prefix':
-			className = /^is-/.test(className) ? className : `is-${className}`;
+			className = className.startsWith('is-') ? className : `is-${className}`;
 			break;
 
 		/**
@@ -122,7 +130,9 @@ function setElemClass(className, add, el, binding, vnode) {
 				baseClass = binding.arg;
 
 				// Don't add the modifier if the base class is absent from the element
-				if (!vnode.elm._prevClass || !vnode.elm._prevClass.split(' ').includes(baseClass)) return;
+				if (!vnode.elm._prevClass || !vnode.elm._prevClass.split(' ').includes(baseClass)) {
+					return;
+				}
 			} else {
 				// Get all the class names that aren't modifiers themselves
 				const classes = vnode.elm._prevClass
@@ -130,7 +140,7 @@ function setElemClass(className, add, el, binding, vnode) {
 					: [];
 
 				// If there is no base class, don't add the modifier
-				if (!classes.length) {
+				if (classes.length === 0) {
 					return;
 				}
 
@@ -139,7 +149,7 @@ function setElemClass(className, add, el, binding, vnode) {
 			}
 
 			// Duplicate the name of the base class and add the modifier as its suffix
-			className = `${baseClass}--${className.replace(/^is-/, '')}`
+			className = `${baseClass}--${className.replace(/^is-/, '')}`;
 			break;
 	}
 
@@ -161,34 +171,40 @@ function checkIfSameClasses(vnode, oldVnode) {
 	const classes    = vnode.data.class;
 	const oldClasses = oldVnode.data.class;
 
-	if (!['string', 'object'].includes(typeof classes) || typeof classes != typeof oldClasses) {
+	if (!['string', 'object'].includes(typeof classes) || typeof classes !== typeof oldClasses) {
 		return false;
 	}
 
 	// Single class
-	if (typeof classes == 'string') {
-		return classes == oldClasses;
+	if (typeof classes === 'string') {
+		return classes === oldClasses;
 	}
 
 	// Array of classes
 	if (Array.isArray(classes)) {
-		return (classes.length == oldClasses.length) && classes.every(className => oldClasses.includes(className));
+		return (classes.length === oldClasses.length) && classes.every(className => oldClasses.includes(className));
 	}
 
 	// Hashmap
 	const keys    = Object.keys(classes);
 	const oldKeys = Object.keys(oldClasses);
 
-	return (keys.length == oldKeys.length) && keys.every(key => oldKeys.includes(key) && classes[key] == oldClasses[key]);
+	return (keys.length === oldKeys.length) && keys.every(key => oldKeys.includes(key) && classes[key] === oldClasses[key]);
 }
 
 /**
  * Convert a kebab-cased string to camel case and conversely
  */
-function kebab2Camel(str) { return str.replace(/-[a-z0-9]/g,     match => match.toUpperCase()[1]);    }
-function camel2Kebab(str) { return str.replace(/(?:[A-Z]|\d+)/g, match => `-${match.toLowerCase()}`); }
+function kebab2Camel(str) {
+	return str.replace(/-[\da-z]/g,  match => match.toUpperCase()[1]);
+}
+function camel2Kebab(str) {
+	return str.replace(/[A-Z]|\d+/g, match => `-${match.toLowerCase()}`);
+}
 
 /**
  * Output an error in the dev console
  */
-function logError(msg) { console.error(`[vue-css-modifiers]: ${msg}`); }
+function logError(msg) {
+	console.error(`[vue-css-modifiers]: ${msg}`);
+}
