@@ -17,12 +17,12 @@ The following code:
 	export default {
 		data() {
 			return {
-				isHidden:      true,
-				isFlipped:     false,
+				isHidden: true,
+				isFlipped: false,
 				isHeightFixed: true,
-			}
+			};
 		},
-	}
+	};
 </script>
 ```
 
@@ -36,17 +36,17 @@ becomes:
 	export default {
 		data() {
 			return {
-				isHidden:      true,
-				isFlipped:     false,
+				isHidden: true,
+				isFlipped: false,
 				isHeightFixed: true,
-			}
+			};
 		},
-	}
+	};
 </script>
 ```
 
 The modifier classes merge seamlessly with other static and dynamic classes. You
-can also easily enforce the style of  your choosing ('is-' or BEM) with a simple
+can also easily enforce the style of  your choosing (`is-` or BEM) with a simple
 directive modifier.
 
 Using a  different directive to declare  CSS modifiers also brings  the indirect
@@ -64,17 +64,17 @@ Import and register the directive in the entry point of your app:
 ```javascript
 // main.js
 
-import Vue             from 'vue'
-import VueCSSModifiers from 'vue-css-modifiers'
+import Vue from 'vue';
+import VueCSSModifiers from 'vue-css-modifiers';
 
 Vue.directive('mods', VueCSSModifiers);
 // […]
 ```
 
 Call the directive using one of the following expressions:
- * a string denoting a class name
- * an array of strings denoting some class names
- * an object whose keys are properties and values booleans
+  * a string denoting a class name
+  * an array of strings denoting some class names
+  * an object whose keys are properties and values booleans
 
 Examples:
 ```html
@@ -110,16 +110,15 @@ Examples:
 				type: Boolean,
 				default: true,
 			},
-		}
-
+		},
 		data() {
 			return {
-				isHidden:      true,
-				isFlipped:     false,
+				isHidden: true,
+				isFlipped: false,
 				isHeightFixed: true,
-			}
+			};
 		},
-	}
+	};
 </script>
 ```
 
@@ -148,8 +147,8 @@ element, the modifier will not be added.
 <!-- Dynamic base class -->
 <div :class="`menu-${menuPos}`" v-mods:menu-top.bem="{ hidden }"></div>
 <!-- Output:
-       <div class="menu-bottom"></div>               (menuPos == 'bottom')
-       <div class="menu-top menu-top––hidden"></div> (menuPos == 'top')
+       <div class="menu-bottom"></div>               (menuPos === 'bottom')
+       <div class="menu-top menu-top––hidden"></div> (menuPos === 'top')
 -->
 
 <!-- Dynamic base class with dynamic argument -->
@@ -166,8 +165,8 @@ modifiers and always enforce the respective syntax.
 ```javascript
 // main.js
 
-import Vue             from 'vue'
-import VueCSSModifiers from 'vue-css-modifiers'
+import Vue from 'vue';
+import VueCSSModifiers from 'vue-css-modifiers';
 
 Vue.directive('is',  VueCSSModifiers);
 Vue.directive('bem', VueCSSModifiers);
