@@ -19,68 +19,53 @@
  */
 
 // The directive will call the function on the `bind` and `update` hooks
-module.exports = function(el, binding, vnode, oldVnode)
-{
+module.exports = function(el, binding, vnode, oldVnode) {
 	const name  = `v-${binding.name}`;
 	const value = binding.value;
 
-	if (value === undefined || value === null)
-	{
+	if (value === undefined || value === null) {
 		logError(`"${name}" is null or undefined`);
 		return -1;
 	}
-	if (!['string', 'object'].includes(typeof value))
-	{
+	if (!['string', 'object'].includes(typeof value)) {
 		logError(`"${name}" must be a string, an array or an object`);
 		return -1;
 	}
-	if (Array.isArray(value) && !value.every(elem => typeof elem == 'string'))
-	{
+	if (Array.isArray(value) && !value.every(elem => typeof elem == 'string')) {
 		logError(`all the values of array "${name}" must be strings`);
 		return -1;
 	}
-	if (Object.prototype.toString.call(value) == '[object Object]' && !Object.keys(value).every(key => typeof value[key] == 'boolean'))
-	{
+	if (Object.prototype.toString.call(value) == '[object Object]' && !Object.keys(value).every(key => typeof value[key] == 'boolean')) {
 		logError(`all the values of object "${name}" must be booleans`);
 		return -1;
 	}
 
-	/**
-	 * String value
-	 * ---------------------------------------------------------------------
-	 */
-	if (typeof value == 'string')
+	if (typeof value == 'string') {
 		return setClassByName(value, el, binding, vnode);
+	}
 
-	/**
-	 * Array value
-	 * ---------------------------------------------------------------------
-	 */
-	if (Array.isArray(value))
-	{
-		for (const val of value)
-			if (setClassByName(val, el, binding, vnode) == -1)
+	if (Array.isArray(value)) {
+		for (const val of value) {
+			if (setClassByName(val, el, binding, vnode) == -1) {
 				return -1;
+			}
+		}
 
 		return 0;
 	}
 
-	/**
-	 * Object value
-	 * ---------------------------------------------------------------------
-	 */
-	const isBEM       = ('bem' in binding.modifiers || binding.name == 'bem');
+	const isBEM       = ('bem' in binding.modifiers || binding.name === 'bem');
 	const sameClasses = checkIfSameClasses(vnode, oldVnode);
 
 	// Add a class to the element for every key whose value is `true`
-	Object.keys(value).forEach(function(key)
-	{
+	for (const key of Object.keys(value)) {
 		// Ignore unchanged values
-		if (binding.oldValue && value[key] === binding.oldValue[key] && (!isBEM || sameClasses))
-			return;
+		if (binding.oldValue && value[key] === binding.oldValue[key] && (!isBEM || sameClasses)) {
+			continue;
+		}
 
 		setElemClass(camel2Kebab(key), value[key], el, binding, vnode);
-	});
+	}
 
 	return 0;
 }
@@ -88,14 +73,12 @@ module.exports = function(el, binding, vnode, oldVnode)
 /**
  * Add/remove the class `class-name` depending on the value of the property `className`
  */
-function setClassByName(className, el, binding, vnode)
-{
+function setClassByName(className, el, binding, vnode) {
 	const prop  = kebab2Camel(className);
 	const value = vnode.context._data[prop];
 
 	// Check that the corresponding property is defined
-	if (value === undefined || value === null)
-	{
+	if (value === undefined || value === null) {
 		logError(`property "${prop}" is undefined or null`);
 		return -1;
 	}
@@ -109,8 +92,7 @@ function setClassByName(className, el, binding, vnode)
 /**
  * Add/remove a class on a DOM element
  */
-function setElemClass(className, add, el, binding, vnode)
-{
+function setElemClass(className, add, el, binding, vnode) {
 	let baseClass = '';
 
 	// Get the mode from the directive modifiers
@@ -122,8 +104,7 @@ function setElemClass(className, add, el, binding, vnode)
 	if (binding.name == 'is')  mode = 'force-is-prefix';
 	if (binding.name == 'bem') mode = 'bem';
 
-	switch (mode)
-	{
+	switch (mode) {
 		/**
 		 * Add `is-` at the beginning of every modifier
 		 * class name (unless the name already starts with `-is`)
@@ -137,22 +118,21 @@ function setElemClass(className, add, el, binding, vnode)
 		 */
 		case 'bem':
 			// If a base class is provided as an argument
-			if ('arg' in binding)
-			{
+			if ('arg' in binding) {
 				baseClass = binding.arg;
 
 				// Don't add the modifier if the base class is absent from the element
 				if (!vnode.elm._prevClass || !vnode.elm._prevClass.split(' ').includes(baseClass)) return;
-			}
-			else
-			{
+			} else {
 				// Get all the class names that aren't modifiers themselves
 				const classes = vnode.elm._prevClass
 					? vnode.elm._prevClass.split(' ').filter(prevClassName => !prevClassName.includes('--'))
 					: [];
 
 				// If there is no base class, don't add the modifier
-				if (!classes.length) return;
+				if (!classes.length) {
+					return;
+				}
 
 				// Else, take the first class of the list
 				baseClass = classes[0];
@@ -163,36 +143,43 @@ function setElemClass(className, add, el, binding, vnode)
 			break;
 	}
 
-	if (add) el.classList.add(className); else el.classList.remove(className);
+	if (add) {
+		el.classList.add(className);
+	} else {
+		el.classList.remove(className);
+	}
 }
 
 /**
  * Return `true` if the classes are the same between the two VNodes, `false` otherwise
  */
-function checkIfSameClasses(vnode, oldVnode)
-{
-	if (!oldVnode || !vnode.data.class || !oldVnode.data.class)
+function checkIfSameClasses(vnode, oldVnode) {
+	if (!oldVnode || !vnode.data.class || !oldVnode.data.class) {
 		return false;
+	}
 
 	const classes    = vnode.data.class;
 	const oldClasses = oldVnode.data.class;
 
-	if (!['string', 'object'].includes(typeof classes) || typeof classes != typeof oldClasses)
+	if (!['string', 'object'].includes(typeof classes) || typeof classes != typeof oldClasses) {
 		return false;
+	}
 
 	// Single class
-	if (typeof classes == 'string')
+	if (typeof classes == 'string') {
 		return classes == oldClasses;
+	}
 
 	// Array of classes
-	if (Array.isArray(classes))
+	if (Array.isArray(classes)) {
 		return (classes.length == oldClasses.length) && classes.every(className => oldClasses.includes(className));
+	}
 
 	// Hashmap
 	const keys    = Object.keys(classes);
 	const oldKeys = Object.keys(oldClasses);
 
-	return (keys.length == oldKeys.length) && keys.every(key => oldKeys.includes(key) && classes[key] == oldClasses[key])
+	return (keys.length == oldKeys.length) && keys.every(key => oldKeys.includes(key) && classes[key] == oldClasses[key]);
 }
 
 /**
