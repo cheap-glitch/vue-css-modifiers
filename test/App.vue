@@ -1,12 +1,6 @@
-
-
-<!-- App.vue -->
-
-
-<!--{{{ Pug -->
 <template lang='pug'>
 
-div.App(:class="{ 'test': toggledClass }")
+div.App(:class="{ test: toggledClass }")
 
 	//----------------------------------------------------------------------
 	//- Test that errors are properly thrown
@@ -122,12 +116,8 @@ div.App(:class="{ 'test': toggledClass }")
 	div#props-mods--3.base-class(v-mods.bem="{ isOpened, isMaximized }")
 
 </template>
-<!--}}}-->
 
-
-<!--{{{ JavaScript -->
 <script>
-
 export default {
 	name: 'App',
 
@@ -144,17 +134,15 @@ export default {
 
 	data() {
 		return {
-			hidden:        true,
-			flipped:       false,
+			hidden: true,
+			flipped: false,
 
-			isHidden:      true,
-			isFlipped:     false,
+			isHidden: true,
+			isFlipped: false,
 
-			navbarPos:     'right',
-			toggledClass:  false,
-		}
+			navbarPos: 'right',
+			toggledClass: false,
+		};
 	},
-}
-
+};
 </script>
-<!--}}}-->
