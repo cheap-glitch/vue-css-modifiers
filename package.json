@@ -20,7 +20,7 @@
     "bem-css",
     "bem-modifiers"
   ],
-  "main": "index.js",
+  "main": "src/index.js",
   "directories": {
     "test": "test"
   },

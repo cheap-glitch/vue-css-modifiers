@@ -1,11 +1,9 @@
-
 /**
  * vue-css-modifiers
  *
  * A tiny Vue directive to simplify the manipulation of CSS modifier classes.
  *
  * Copyright (c) 2019-present, cheap glitch
- *
  *
  * Permission  to use,  copy, modify,  and/or distribute  this software  for any
  * purpose  with or  without  fee is  hereby granted,  provided  that the  above
@@ -20,7 +18,7 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
-// The directive will call the function on the 'bind' and 'update' hooks
+// The directive will call the function on the `bind` and `update` hooks
 module.exports = function(el, binding, vnode, oldVnode)
 {
 	const name  = `v-${binding.name}`;
@@ -74,7 +72,7 @@ module.exports = function(el, binding, vnode, oldVnode)
 	const isBEM       = ('bem' in binding.modifiers || binding.name == 'bem');
 	const sameClasses = checkIfSameClasses(vnode, oldVnode);
 
-	// Add a class to the element for every key whose value is true
+	// Add a class to the element for every key whose value is `true`
 	Object.keys(value).forEach(function(key)
 	{
 		// Ignore unchanged values
@@ -88,7 +86,7 @@ module.exports = function(el, binding, vnode, oldVnode)
 }
 
 /**
- * Add/remove the class 'class-name' depending on the value of the property 'className'
+ * Add/remove the class `class-name` depending on the value of the property `className`
  */
 function setClassByName(className, el, binding, vnode)
 {
@@ -127,8 +125,8 @@ function setElemClass(className, add, el, binding, vnode)
 	switch (mode)
 	{
 		/**
-		 * Add 'is-' at the beginning of every modifier
-		 * class name (unless the name already starts with '-is')
+		 * Add `is-` at the beginning of every modifier
+		 * class name (unless the name already starts with `-is`)
 		 */
 		case 'force-is-prefix':
 			className = /^is-/.test(className) ? className : `is-${className}`;
@@ -169,7 +167,7 @@ function setElemClass(className, add, el, binding, vnode)
 }
 
 /**
- * Return 'true' if the classes are the same between the two VNodes, 'false' otherwise
+ * Return `true` if the classes are the same between the two VNodes, `false` otherwise
  */
 function checkIfSameClasses(vnode, oldVnode)
 {
