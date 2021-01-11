@@ -28,7 +28,7 @@
     "coverage:collect": "npm test -- --collectCoverage",
     "coverage:upload": "coveralls < .coverage/lcov.info",
     "lint": "eslint . --ext .js --ignore-path .gitignore",
-    "test": "vue-cli-service test:unit 'test/*.test.js'"
+    "test": "vue-cli-service test:unit"
   },
   "eslintConfig": {
     "root": true,
@@ -49,6 +49,7 @@
   },
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest",
+    "testMatch": ["<rootDir>/test/*.test.js"],
     "coverageDirectory": ".coverage"
   },
   "devDependencies": {
