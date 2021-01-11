@@ -3,21 +3,13 @@ import { shallowMount } from '@vue/test-utils';
 
 import App from './App.vue';
 import VueCSSModifiers from '../index';
+import { setProps, setData, factory } from './helpers';
 
 Vue.directive('mods', VueCSSModifiers);
 Vue.directive('is',   VueCSSModifiers);
 Vue.directive('bem',  VueCSSModifiers);
 
-const factory  = (data = {}) => shallowMount(App, { data() {
- return { ...data }; 
-} });
-const setData  = async (wrapper, data)  => {
- wrapper.setData(data);   await Vue.nextTick(); 
-};
-const setProps = async (wrapper, props) => {
- wrapper.setProps(props); await Vue.nextTick(); 
-};
-const wrapper  = factory();
+const wrapper = factory();
 
 it('adds modifiers properly', () => { // {{{
 
