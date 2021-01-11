@@ -1,17 +1,11 @@
-export function factory(data = {}) {
-	shallowMount(App, {
-		data() {
-			return { ...data };
-		}
-	});
-}
+import { nextTick } from 'vue';
 
 export async function setData(wrapper, data) {
 	wrapper.setData(data);
-	await Vue.nextTick();
+	await nextTick();
 }
 
 export async function setProps(wrapper, props) {
 	wrapper.setProps(props);
-	await Vue.nextTick();
+	await nextTick();
 }

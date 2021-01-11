@@ -2,14 +2,14 @@ import Vue from 'vue';
 import { shallowMount } from '@vue/test-utils';
 
 import App from './App.vue';
-import VueCSSModifiers from '../index';
-import { setProps, setData, factory } from './helpers';
+import VueCSSModifiers from '../src/index';
+import { setProps, setData } from './helpers';
 
 Vue.directive('mods', VueCSSModifiers);
 Vue.directive('is',   VueCSSModifiers);
 Vue.directive('bem',  VueCSSModifiers);
 
-const wrapper = factory();
+const wrapper = shallowMount(App);
 
 it('adds modifiers properly', () => { // {{{
 
