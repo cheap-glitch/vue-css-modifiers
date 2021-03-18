@@ -158,7 +158,7 @@ element, the modifier will not be added.
 <!-- Output: <div class="navbar-left navbar-left––hidden"></div> -->
 ```
 
-### Using 'is-' or BEM syntax by default
+### Using `is-` or BEM syntax by default
 
 If you  register the  directive with  the name  `is` or  `bem`, it  will discard
 modifiers and always enforce the respective syntax.
