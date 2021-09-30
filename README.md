@@ -55,7 +55,7 @@ benefit of a clear separation between the main classes and their modifiers.
 
 ## Installation
 
-```
+```shell
 npm i vue-css-modifiers
 ```
 
@@ -183,7 +183,9 @@ Vue.directive('bem', VueCSSModifiers);
 ```
 
 ## Changelog
+
 See the full changelog [here](https://github.com/cheap-glitch/vue-css-modifiers/releases).
 
 ## License
-This software is distributed under the ISC license.
+
+ISC

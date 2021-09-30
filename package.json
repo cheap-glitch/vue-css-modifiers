@@ -25,7 +25,7 @@
     "test": "test"
   },
   "scripts": {
-    "coverage:collect": "npm test -- --collectCoverage",
+    "coverage": "npm test -- --collectCoverage",
     "coverage:upload": "coveralls < .coverage/lcov.info",
     "lint": "eslint . --ext .js --ignore-path .gitignore",
     "test": "vue-cli-service test:unit --silent"
@@ -40,7 +40,7 @@
     "overrides": [
       {
         "files": [
-          "./test/*.js"
+          "test/*.js"
         ],
         "parserOptions": {
           "sourceType": "module",
