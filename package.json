@@ -1,24 +1,25 @@
 {
   "name": "vue-css-modifiers",
-  "description": "A tiny Vue directive to simplify the manipulation of CSS modifier classes.",
   "version": "1.0.8",
+  "description": "A tiny Vue directive to simplify the manipulation of CSS modifier classes.",
   "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cheap-glitch/vue-css-modifiers.git"
-  },
-  "bugs": {
-    "url": "https://github.com/cheap-glitch/vue-css-modifiers/issues"
-  },
   "author": "cheap glitch <cheap.glitch@gmail.com> (https://github.com/cheap-glitch)",
+  "repository": "cheap-glitch/vue-css-modifiers",
   "homepage": "https://github.com/cheap-glitch/vue-css-modifiers#readme",
+  "bugs": "https://github.com/cheap-glitch/vue-css-modifiers/issues",
+  "funding": "https://github.com/sponsors/cheap-glitch",
   "keywords": [
-    "vue",
-    "vue-directive",
-    "css",
     "bem",
-    "bem-css",
-    "bem-modifiers"
+    "classes",
+    "css",
+    "directive",
+    "html",
+    "modifiers",
+    "readability",
+    "style",
+    "templates",
+    "vue",
+    "vuejs"
   ],
   "main": "src/index.js",
   "directories": {
