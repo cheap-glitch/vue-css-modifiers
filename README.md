@@ -7,43 +7,23 @@
 **vue-css-modifiers** provides  a tiny, zero-dependencies directive  to simplify
 the manipulation of CSS modifier classes.
 
-The following code:
+For example, the following template:
+
 ```html
 <template>
-	<div :class="{ 'is-hidden': isHidden, 'is-flipped': isFlipped, 'is-height-fixed': isHeightFixed }">
+	<div
+		:class="{ 'is-hidden': isHidden, 'is-nav-sticky': isNavSticky }"
+	>
 	</div>
 </template>
-
-<script>
-	export default {
-		data() {
-			return {
-				isHidden: true,
-				isFlipped: false,
-				isHeightFixed: true,
-			};
-		},
-	};
-</script>
 ```
 
-becomes:
+can be shortened to:
+
 ```html
 <template>
-	<div v-mods="{ isHidden, isFlipped, isHeightFixed }"></div>
+	<div v-mods="{ isHidden, isNavSticky }"></div>
 </template>
-
-<script>
-	export default {
-		data() {
-			return {
-				isHidden: true,
-				isFlipped: false,
-				isHeightFixed: true,
-			};
-		},
-	};
-</script>
 ```
 
 The modifier classes merge seamlessly with other static and dynamic classes. You
@@ -55,13 +35,14 @@ benefit of a clear separation between the main classes and their modifiers.
 
 ## Installation
 
-```shell
+```
 npm i vue-css-modifiers
 ```
 
 ## Usage
 
 Import and register the directive in the entry point of your app:
+
 ```javascript
 // main.js
 
@@ -73,11 +54,12 @@ Vue.directive('mods', VueCSSModifiers);
 ```
 
 Call the directive using one of the following expressions:
-  * a string denoting a class name
-  * an array of strings denoting some class names
-  * an object whose keys are properties and values booleans
+ * a string denoting a class name
+ * an array of strings denoting some class names
+ * an object whose keys are properties and values booleans
 
 Examples:
+
 ```html
 <template>
 	<!-- With the string expression, the class name will be
@@ -92,11 +74,11 @@ Examples:
 
 	<!-- With an object expression, the names of the properties will be
 	     converted to kebab case -->
-	<div v-mods="{ isHeightFixed, isSpinning: name === 'spinner' }"></div>
+	<div v-mods="{ isNavSticky, isSpinning: name === 'spinner' }"></div>
 	<!-- Output: <div class="is-height-fixed is-spinning"></div> -->
 
 	<!-- Works with both props and data -->
-	<div v-mods="{ isOpened, isHeightFixed }"></div>
+	<div v-mods="{ isOpened, isNavSticky }"></div>
 	<!-- Output: <div class="is-opened is-height-fixed"></div> -->
 </template>
 
@@ -116,7 +98,7 @@ Examples:
 			return {
 				isHidden: true,
 				isFlipped: false,
-				isHeightFixed: true,
+				isNavSticky: true,
 			};
 		},
 	};
@@ -126,8 +108,9 @@ Examples:
 ### Syntax modifiers
 
 Use the `is` modifier to automatically prefix all modifier classes with `is-`:
+
 ```html
-<div v-mods.is="{ hidden, isHeightFixed }"></div>
+<div v-mods.is="{ hidden, isNavSticky }"></div>
 <!-- Output: <div class="is-hidden, is-height-fixed"></div> -->
 ```
 
@@ -136,6 +119,7 @@ This base class can either be  defined explicitly  through a directive argument,
 or left implicit (in that case, the directive will use the first class it founds
 that is not a BEM modifier). Either way, if the base class is not present on the
 element, the modifier will not be added.
+
 ```html
 <!-- Implicit base class -->
 <div class="navbar" v-mods.bem="{ hidden }"></div>
@@ -185,6 +169,10 @@ Vue.directive('bem', VueCSSModifiers);
 ## Changelog
 
 See the full changelog [here](https://github.com/cheap-glitch/vue-css-modifiers/releases).
+
+## Contributing
+
+Contributions are welcomed! Please open an issue before submitting substantial changes.
 
 ## License
 
