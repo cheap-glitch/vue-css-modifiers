@@ -1,8 +1,8 @@
 # 🖌️ vue-css-modifiers
 
-![License](https://badgen.net/github/license/cheap-glitch/vue-css-modifiers?color=green)
-![Release](https://badgen.net/github/release/cheap-glitch/vue-css-modifiers?color=green)
-[![Coverage status](https://coveralls.io/repos/github/cheap-glitch/vue-css-modifiers/badge.svg?branch=main)](https://coveralls.io/github/cheap-glitch/vue-css-modifiers?branch=main)
+[![License](https://shields.io/github/license/cheap-glitch/vue-css-modifiers)](LICENSE)
+[![Latest release](https://shields.io/github/v/release/cheap-glitch/vue-css-modifiers?sort=semver&label=latest%20release&color=green)](https://github.com/cheap-glitch/vue-css-modifiers/releases/latest)
+[![Coverage status](https://shields.io/coveralls/github/cheap-glitch/vue-css-modifiers)](https://coveralls.io/github/cheap-glitch/vue-css-modifiers)
 
 **vue-css-modifiers** provides  a tiny, zero-dependencies directive  to simplify
 the manipulation of CSS modifier classes.
