@@ -1,8 +1,4 @@
-# npm
-/node_modules/
-/.npmrc
-npm-debug.log
-
-# Code coverage
+*.env
 /.coverage/
 /.coveralls.yml
+/node_modules/
